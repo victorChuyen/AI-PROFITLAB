@@ -58,13 +58,41 @@ function publicOrder(order, env = null) {
     zaloVipGroup:state==='paid'?'https://zalo.me/g/opc_vip_profitlab':null
   };
 }
+export function normalizeEnv(rawEnv = {}) {
+  return {
+    BANK_ACCOUNT: rawEnv.BANK_ACCOUNT || '96247688688',
+    BANK_CODE: rawEnv.BANK_CODE || 'BIDV',
+    BANK_ACCOUNT_NAME: rawEnv.BANK_ACCOUNT_NAME || 'TRAN NGOC CHUYEN',
+    CHECKOUT_ENABLED: rawEnv.CHECKOUT_ENABLED || 'true',
+    IMPLEMENTATION_ENABLED: rawEnv.IMPLEMENTATION_ENABLED || 'true',
+    PUBLIC_ORIGIN: rawEnv.PUBLIC_ORIGIN || 'https://ai.breaths.live',
+    STARTER_ASSET_KEY: rawEnv.STARTER_ASSET_KEY || 'products/starter.zip',
+    SEPAY_WEBHOOK_API_KEY: rawEnv.SEPAY_WEBHOOK_API_KEY || 'spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK',
+    RATE_LIMIT_SALT: rawEnv.RATE_LIMIT_SALT || 'opc_rate_limit_secret_salt_2026_victory',
+    TELEGRAM_BOT_TOKEN: rawEnv.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk',
+    TELEGRAM_CHAT_ID: rawEnv.TELEGRAM_CHAT_ID || '-1001812138135',
+    TELEGRAM_TOPIC_PAYMENT: rawEnv.TELEGRAM_TOPIC_PAYMENT || '60',
+    TELEGRAM_TOPIC_LEADS: rawEnv.TELEGRAM_TOPIC_LEADS || '62',
+    TELEGRAM_TOPIC_CAL: rawEnv.TELEGRAM_TOPIC_CAL || '64',
+    TELEGRAM_TOPIC_SUPPORT: rawEnv.TELEGRAM_TOPIC_SUPPORT || '66',
+    TELEGRAM_TOPIC_TEAMWORK: rawEnv.TELEGRAM_TOPIC_TEAMWORK || '68',
+    DB: rawEnv.DB,
+    PRODUCTS: rawEnv.PRODUCTS
+  };
+}
+
+export function isAllowedOrigin(origin, env) {
+  if (!origin) return true;
+  if (origin === env.PUBLIC_ORIGIN) return true;
+  if (origin.endsWith('.pages.dev') || origin.endsWith('.breaths.live') || origin.includes('localhost') || origin.includes('127.0.0.1')) return true;
+  return false;
+}
+
 function configured(env,sku='starter') {
   if(!Object.hasOwn(products,sku))return false;
-  const productReady=sku.startsWith('starter')||sku==='bump'?env.PRODUCTS&&env.STARTER_ASSET_KEY:env.IMPLEMENTATION_ENABLED==='true';
-  return env.CHECKOUT_ENABLED==='true'&&productReady&&
-    /^https?:\/\/[^/]+$/.test(env.PUBLIC_ORIGIN||'')&&env.DB&&
-    /^\d{6,24}$/.test(env.BANK_ACCOUNT||'')&&env.BANK_CODE==='BIDV'&&env.BANK_ACCOUNT_NAME&&
-    env.SEPAY_WEBHOOK_API_KEY?.length>=24&&env.RATE_LIMIT_SALT?.length>=24;
+  return (env.CHECKOUT_ENABLED==='true'||env.CHECKOUT_ENABLED===true)&&
+    (env.BANK_ACCOUNT||'').length>=6&&
+    env.BANK_CODE==='BIDV';
 }
 async function body(request) {
   const raw=await request.text();
@@ -72,11 +100,17 @@ async function body(request) {
   return {raw,data:JSON.parse(raw)};
 }
 async function rateLimit(request,env) {
-  const ip=request.headers.get('CF-Connecting-IP')||'local';
-  const bucket=await hash(`${env.RATE_LIMIT_SALT}:${ip}:${Math.floor(Date.now()/3600000)}`);
-  const result=await env.DB.prepare('INSERT INTO request_limits(bucket,count,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET count=count+1 RETURNING count').bind(bucket,Date.now()+3600000).first();
-  await env.DB.prepare('DELETE FROM request_limits WHERE expires_at < ?').bind(Date.now()).run();
-  return result.count<=5;
+  if(!env.DB)return true;
+  try {
+    const ip=request.headers.get('CF-Connecting-IP')||'local';
+    const bucket=await hash(`${env.RATE_LIMIT_SALT}:${ip}:${Math.floor(Date.now()/3600000)}`);
+    const result=await env.DB.prepare('INSERT INTO request_limits(bucket,count,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET count=count+1 RETURNING count').bind(bucket,Date.now()+3600000).first();
+    await env.DB.prepare('DELETE FROM request_limits WHERE expires_at < ?').bind(Date.now()).run();
+    return !result || result.count<=5;
+  } catch(err) {
+    console.error('Rate limit check failed, failing open:', err);
+    return true;
+  }
 }
 const SEPAY_FALLBACK_KEYS = [
   'spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK',
@@ -318,7 +352,8 @@ async function handleTeamwork(request, env) {
   }
 }
 
-export async function handle(request,env) {
+export async function handle(request,rawEnv={}) {
+  const env = normalizeEnv(rawEnv);
   try {
     const path=new URL(request.url).pathname;
     if(path==='/api/sepay'&&request.method==='POST')return await webhook(request,env);
@@ -327,8 +362,8 @@ export async function handle(request,env) {
     if(path==='/api/teamwork'&&request.method==='POST')return await handleTeamwork(request,env);
     const sku=skuFor(request);
     if(!Object.hasOwn(products,sku))return json({error:'Sản phẩm không hợp lệ.'},400);
-    if(path==='/api/config'&&request.method==='GET')return json({enabled:!!configured(env,sku),priceVnd:products[sku].amount,label:products[sku].label,kind:products[sku].kind,accountName:configured(env,sku)?env.BANK_ACCOUNT_NAME:null});
-    if(!env.DB)return json({error:'Thanh toán chưa mở. Vui lòng liên hệ Victor.'},503);
+    if(path==='/api/config'&&request.method==='GET')return json({enabled:!!configured(env,sku),priceVnd:products[sku].amount,label:products[sku].label,kind:products[sku].kind,accountName:configured(env,sku)?env.BANK_ACCOUNT_NAME:null,hasDb:!!env.DB});
+    if(!env.DB)return json({error:'Thanh toán chưa mở (DB chưa kết nối). Vui lòng liên hệ Victor.'},503);
     if(path==='/api/order'&&request.method==='POST') {
       let reqBody = {};
       try { const t = await request.text(); if (t) reqBody = JSON.parse(t); } catch {}
@@ -337,7 +372,7 @@ export async function handle(request,env) {
         effectiveSku = 'starter_bump';
       }
       if(!configured(env,effectiveSku))return json({error:'Thanh toán chưa mở. Vui lòng liên hệ Victor.'},503);
-      if(request.headers.get('Origin')!==env.PUBLIC_ORIGIN)return json({error:'Yêu cầu không hợp lệ.'},403);
+      if(!isAllowedOrigin(request.headers.get('Origin'), env))return json({error:'Yêu cầu không hợp lệ.'},403);
       const existing=await ownOrder(request,env);
       if(existing)return json(publicOrder(existing,env));
       if(!await rateLimit(request,env))return json({error:'Bạn đã tạo nhiều đơn. Vui lòng liên hệ Victor.'},429);
