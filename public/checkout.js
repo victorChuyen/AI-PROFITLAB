@@ -1,0 +1,357 @@
+'use strict';
+
+let currentSku = new URLSearchParams(location.search).get('sku') || 'starter';
+if (!['starter', 'implementation'].includes(currentSku)) currentSku = 'starter';
+
+const $ = id => document.getElementById(id);
+const money = value => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+
+let poll = null, attempts = 0, busy = false;
+let basePrice = currentSku === 'implementation' ? 7800000 : 500000;
+const bumpPrice = 250000;
+let currentOrder = null;
+
+async function api(url, options = {}) {
+  const response = await fetch(url, {
+    ...options,
+    credentials: 'same-origin',
+    cache: 'no-store'
+  });
+  if (!response.headers.get('content-type')?.includes('application/json')) {
+    throw new Error('Thanh toán online chưa mở trên địa chỉ này. Vui lòng liên hệ Victor (0989 890 022).');
+  }
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Chưa thể kiểm tra. Vui lòng thử lại.');
+  return data;
+}
+
+function copyToClipboard(text, btnElement) {
+  const originalText = btnElement.textContent;
+  const setCopied = () => {
+    btnElement.textContent = '✅ Đã chép!';
+    btnElement.classList.add('copied');
+    setTimeout(() => {
+      btnElement.textContent = originalText;
+      btnElement.classList.remove('copied');
+    }, 2000);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(setCopied).catch(() => fallbackCopy(text, setCopied));
+  } else {
+    fallbackCopy(text, setCopied);
+  }
+}
+
+function fallbackCopy(text, onSuccess) {
+  try {
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.focus();
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    onSuccess();
+  } catch {}
+}
+
+function render(order) {
+  currentOrder = order;
+  $('checkout-consent').hidden = true;
+  $('bank-order').hidden = false;
+
+  $('order-code').textContent = order.code;
+  $('order-amount').textContent = money(order.amount);
+  $('order-bank').textContent = `${order.bank} · ${order.account}`;
+  if (order.accountName) $('account-name').textContent = order.accountName;
+
+  // Copy button listeners
+  $('copy-code-btn').onclick = () => copyToClipboard(order.code, $('copy-code-btn'));
+  $('copy-amount-btn').onclick = () => copyToClipboard(String(order.amount), $('copy-amount-btn'));
+  $('copy-acc-btn').onclick = () => copyToClipboard(order.account, $('copy-acc-btn'));
+
+  const isExpired = order.status === 'expired' || order.status === 'cancelled';
+  const isPaid = order.status === 'paid';
+  const isPending = order.status === 'pending';
+
+  const labels = {
+    pending: 'Đang chờ chuyển khoản ngân hàng qua VietQR',
+    paid: 'Đã xác nhận thanh toán thành công 🎉',
+    expired: 'Mã thanh toán đã hết thời gian chờ',
+    review: 'Giao dịch đang được đối soát thủ công',
+    refunded: 'Đơn đã hoàn tiền',
+    cancelled: 'Đơn đã hủy'
+  };
+  $('order-state').textContent = labels[order.status] || 'Liên hệ hỗ trợ';
+
+  // Bank QR visibility
+  $('bank-qr').hidden = !order.qrUrl || isPaid || isExpired;
+  if (order.qrUrl && isPending) {
+    $('bank-qr').src = order.qrUrl;
+  }
+
+  // Handle Expired State (No dead-end!)
+  if (isExpired) {
+    $('order-notice-box').hidden = false;
+    $('order-notice-box').innerHTML = `
+      <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; font-size: 13.5px; line-height: 1.5;">
+        ⚠️ <b>Mã đơn ${order.code} đã hết hạn thời gian giữ chỗ (20 phút).</b><br>
+        Vui lòng bấm nút <b>"Tạo mã thanh toán mới"</b> bên dưới để hệ thống sinh mã VietQR mới tức thì.
+      </div>
+    `;
+    $('order-instructions').textContent = 'Mã chuyển khoản trước đó đã hết hạn để đảm bảo an toàn giao dịch.';
+    $('btn-renew-order').hidden = false;
+    $('simulate-pay-btn').hidden = true;
+    $('check-payment').hidden = true;
+    if (poll) { clearInterval(poll); poll = null; }
+    return;
+  }
+
+  $('order-notice-box').hidden = true;
+  $('btn-renew-order').hidden = true;
+
+  if (isPaid) {
+    // Show Instant Success Card and hide payment details
+    $('payment-success-card').hidden = false;
+    $('order-actions').hidden = true;
+    if ($('qr-payment-wrapper')) $('qr-payment-wrapper').hidden = true;
+    $('order-state').hidden = true;
+    $('order-instructions').hidden = true;
+    if ($('success-cust-name')) $('success-cust-name').textContent = order.customerName || 'bạn';
+    if ($('success-cust-email')) $('success-cust-email').textContent = order.email || 'hộp thư của bạn';
+
+    if (order.downloadUrl) {
+      $('download-product').hidden = false;
+      $('download-product').href = order.downloadUrl;
+    } else {
+      $('download-product').hidden = true;
+    }
+    if (order.driveVipLink) $('drive-vip-link').href = order.driveVipLink;
+    if (order.zaloVipGroup) $('zalo-vip-link').href = order.zaloVipGroup;
+
+    if (poll) { clearInterval(poll); poll = null; }
+  } else {
+    // Pending State
+    $('payment-success-card').hidden = true;
+    $('order-actions').hidden = false;
+    if ($('qr-payment-wrapper')) $('qr-payment-wrapper').hidden = false;
+    $('order-state').hidden = false;
+    $('order-instructions').hidden = false;
+    $('check-payment').hidden = false;
+    const isDev = new URLSearchParams(location.search).get('dev') === '1';
+    $('simulate-pay-btn').hidden = !isDev;
+    $('order-instructions').textContent = `Chuyển đúng số tiền ${money(order.amount)}, giữ nguyên nội dung ${order.code}. Hệ thống SePay tự động xác nhận từ ngân hàng BIDV trong 3-5 giây.`;
+
+    // Realtime polling every 3s
+    if (!poll) {
+      poll = setInterval(() => {
+        if (++attempts > 120) { // 6 minutes max
+          clearInterval(poll);
+          poll = null;
+          return;
+        }
+        check();
+      }, 3000);
+    }
+  }
+
+  $('checkout-message').textContent = '';
+}
+
+async function check() {
+  if (busy) return;
+  busy = true;
+  try {
+    const data = await api(`/api/order?sku=${encodeURIComponent(currentSku)}`);
+    render(data);
+  } catch (e) {
+    $('checkout-message').textContent = e.message;
+  } finally {
+    busy = false;
+  }
+}
+
+$('check-payment').addEventListener('click', check);
+$('bank-qr').addEventListener('error', () => { $('qr-error').hidden = false; });
+
+// Simulate payment test handler
+$('simulate-pay-btn').addEventListener('click', async () => {
+  if (!currentOrder || !currentOrder.code) return;
+  const btn = $('simulate-pay-btn');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ Đang xác nhận SePay...';
+  $('checkout-message').textContent = '⚡ Đang gửi tín hiệu ngân hàng giả lập...';
+
+  try {
+    const res = await api(`/api/test-pay?code=${encodeURIComponent(currentOrder.code)}`);
+    $('checkout-message').textContent = `✅ ${res.message}`;
+    await check();
+  } catch (err) {
+    $('checkout-message').textContent = `Lỗi thử nghiệm: ${err.message}`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+
+// Renew / Edit Order Handlers
+function reopenFormWithPrefill() {
+  if (currentOrder) {
+    if ($('cust-name') && currentOrder.customerName) $('cust-name').value = currentOrder.customerName;
+    if ($('cust-email') && currentOrder.email) $('cust-email').value = currentOrder.email;
+    if ($('cust-phone') && currentOrder.phone) $('cust-phone').value = currentOrder.phone;
+    if ($('bump-addon') && currentSku === 'starter') $('bump-addon').checked = !!currentOrder.bump;
+    updateTotal();
+  }
+  $('bank-order').hidden = true;
+  $('checkout-consent').hidden = false;
+  $('checkout-message').textContent = 'Vui lòng kiểm tra lại thông tin và bấm Tạo mã thanh toán VietQR để nhận mã mới.';
+  if (poll) { clearInterval(poll); poll = null; }
+}
+
+$('btn-renew-order').addEventListener('click', reopenFormWithPrefill);
+$('btn-edit-order').addEventListener('click', reopenFormWithPrefill);
+
+// Calculate total with Order Bump
+function updateTotal() {
+  const isBump = $('bump-addon')?.checked && currentSku === 'starter';
+  const currentTotal = isBump ? (basePrice + bumpPrice) : basePrice;
+  $('summary-total-price').textContent = money(currentTotal);
+  $('summary-bump-row').hidden = !isBump;
+}
+
+if ($('bump-addon')) {
+  $('bump-addon').addEventListener('change', updateTotal);
+}
+
+// Create Order Handler
+$('create-order').addEventListener('click', async () => {
+  const nameInput = $('cust-name');
+  const emailInput = $('cust-email');
+  const phoneInput = $('cust-phone');
+  const confirmBox = $('confirm-purchase');
+
+  const name = (nameInput.value || '').trim();
+  const email = (emailInput.value || '').trim();
+  const phone = (phoneInput.value || '').trim();
+
+  // Validate form
+  if (!name) {
+    $('checkout-message').textContent = '⚠️ Vui lòng nhập họ và tên của bạn.';
+    nameInput.focus();
+    return;
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    $('checkout-message').textContent = '⚠️ Vui lòng nhập email hợp lệ để nhận link Google Drive VIP.';
+    emailInput.focus();
+    return;
+  }
+  if (!phone || phone.replace(/\D/g, '').length < 9) {
+    $('checkout-message').textContent = '⚠️ Vui lòng nhập số điện thoại / Zalo để nhận hỗ trợ 1:1.';
+    phoneInput.focus();
+    return;
+  }
+  if (!confirmBox.checked) {
+    $('checkout-message').textContent = '⚠️ Vui lòng đánh dấu xác nhận điều khoản mua hàng trước khi tiếp tục.';
+    confirmBox.focus();
+    return;
+  }
+
+  const isBump = $('bump-addon')?.checked && currentSku === 'starter';
+  $('create-order').disabled = true;
+  $('checkout-message').textContent = 'Đang khởi tạo mã thanh toán VietQR an toàn…';
+
+  try {
+    const orderData = await api(`/api/order?sku=${encodeURIComponent(currentSku)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        bump: isBump
+      })
+    });
+    render(orderData);
+  } catch (e) {
+    $('checkout-message').textContent = e.message;
+  } finally {
+    $('create-order').disabled = false;
+  }
+});
+
+// Package Switcher Handler
+function switchSku(newSku) {
+  if (newSku === currentSku) return;
+  currentSku = newSku;
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.set('sku', currentSku);
+  window.history.pushState({}, '', newUrl);
+  initSku();
+}
+
+$('tab-starter').addEventListener('click', () => switchSku('starter'));
+$('tab-implementation').addEventListener('click', () => switchSku('implementation'));
+
+// Initialization for current SKU
+async function initSku() {
+  if (poll) { clearInterval(poll); poll = null; }
+  attempts = 0;
+
+  // Update tabs UI
+  $('tab-starter').classList.toggle('active', currentSku === 'starter');
+  $('tab-implementation').classList.toggle('active', currentSku === 'implementation');
+
+  const fallback = {
+    starter: ['OPC Starter tiếng Việt (Cẩm nang 45 trang)', 500000],
+    implementation: ['OPC triển khai riêng Done-For-You (Sprint 1:1)', 7800000]
+  }[currentSku];
+
+  $('checkout-label').textContent = fallback[0];
+  basePrice = fallback[1];
+  $('checkout-price').textContent = money(basePrice);
+  $('summary-pkg-name').textContent = fallback[0];
+  $('summary-main-price').textContent = money(basePrice);
+  $('summary-total-price').textContent = money(basePrice);
+
+  // Show Order Bump only for Starter Pack
+  $('order-bump-card').hidden = currentSku !== 'starter';
+  $('service-warning').hidden = currentSku !== 'implementation';
+
+  try {
+    const cfg = await api(`/api/config?sku=${encodeURIComponent(currentSku)}`);
+    basePrice = cfg.priceVnd || basePrice;
+    $('checkout-price').textContent = money(basePrice);
+    $('summary-main-price').textContent = money(basePrice);
+    updateTotal();
+
+    if (cfg.accountName) $('account-name').textContent = cfg.accountName;
+
+    // Existing orders check for this SKU
+    try {
+      const existing = await api(`/api/order?sku=${encodeURIComponent(currentSku)}`);
+      render(existing);
+      return;
+    } catch {
+      /* No existing order, show fresh checkout consent */
+    }
+
+    if (!cfg.enabled) {
+      $('checkout-message').textContent = 'Thanh toán online đang được chuẩn bị. Liên hệ Victor qua Zalo 0989 890 022 để đặt mua.';
+      return;
+    }
+
+    $('bank-order').hidden = true;
+    $('checkout-consent').hidden = false;
+    $('checkout-message').textContent = 'Điền thông tin và kiểm tra số tài khoản BIDV 96247688688 trước khi chuyển khoản.';
+  } catch (e) {
+    $('checkout-message').textContent = e.message;
+  }
+}
+
+// Initial Run
+initSku();

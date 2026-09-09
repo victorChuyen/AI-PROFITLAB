@@ -1,0 +1,11 @@
+{
+  "name": "opc-signature-pages",
+  "version": "3.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/payment.test.mjs"
+  },
+  "engines": { "node": ">=22.13" }
+}

@@ -1,0 +1,36 @@
+# ==============================================================================
+# 🏆 CLOUDFLARE PAGES WRANGLER CONFIGURATION
+# OPC AI PROFITLAB SIGNATURE FUNNEL
+# ==============================================================================
+
+name = "opc-signature-pages"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "dist"
+
+# D1 Database binding: run `migrations/0001_orders.sql` before first launch
+[[d1_databases]]
+binding = "DB"
+database_name = "opc-orders-db"
+database_id = "44c76052-e02c-4552-b7f3-ea816fcc76a0"
+
+# Optional R2 Private Bucket binding (enable in Cloudflare Dashboard if hosting direct ZIP downloads):
+# [[r2_buckets]]
+# binding = "PRODUCTS"
+# bucket_name = "opc-products"
+
+# Default Environment Variables (Can be overridden in Pages Settings)
+[vars]
+BANK_ACCOUNT = "96247688688"
+BANK_CODE = "BIDV"
+BANK_ACCOUNT_NAME = "TRAN NGOC CHUYEN"
+CHECKOUT_ENABLED = "true"
+IMPLEMENTATION_ENABLED = "true"
+PUBLIC_ORIGIN = "https://ai.breaths.live"
+STARTER_ASSET_KEY = "products/starter.zip"
+TELEGRAM_BOT_TOKEN = "8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk"
+TELEGRAM_CHAT_ID = "-1001812138135"
+TELEGRAM_TOPIC_PAYMENT = "60"
+TELEGRAM_TOPIC_LEADS = "62"
+TELEGRAM_TOPIC_CAL = "64"
+TELEGRAM_TOPIC_SUPPORT = "66"
+TELEGRAM_TOPIC_TEAMWORK = "68"

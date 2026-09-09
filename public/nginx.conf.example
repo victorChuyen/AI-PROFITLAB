@@ -1,0 +1,17 @@
+# Nginx Configuration for Clean SEO URLs (Hide .html)
+# Add this inside your server { ... } block:
+
+# 1. 301 Permanent Redirect from .html to clean URL
+if ($request_uri ~ ^/(.*)\.html(\?.*)?$) {
+    return 301 /$1$is_args$args;
+}
+
+# 2. Redirect /index to root /
+if ($request_uri ~ ^/index(\?.*)?$) {
+    return 301 /$is_args$args;
+}
+
+# 3. Clean URL routing with fallback to .html
+location / {
+    try_files $uri $uri/ $uri.html =404;
+}

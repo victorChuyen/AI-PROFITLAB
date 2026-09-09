@@ -1,0 +1,24 @@
+from pathlib import Path
+root=Path(__file__).resolve().parents[1]
+path=root/'build.py'
+text=path.read_text(encoding='utf-8')
+text=text.replace('OPC Starter · $19 một lần','OPC Starter · 500.000đ một lần')
+text=text.replace('Starter $19','Starter 500.000đ')
+text=text.replace('giá Starter $19','giá Starter 500.000đ')
+text=text.replace('$19 một lần','500.000đ một lần')
+text=text.replace('$19, thanh toán một lần','500.000đ, thanh toán một lần')
+text=text.replace('<div class="price">$19 <span>một lần</span></div>','<div class="price">500.000đ <span>một lần</span></div>')
+text=text.replace('Liên hệ đặt Starter','Đặt bộ Starter')
+text=text.replace("'https://zalo.me/0989890022','primary','data-starter target=\"_blank\" rel=\"noopener noreferrer\"'","'checkout.html?sku=starter','primary','data-starter'")
+text=text.replace("'https://zalo.me/0989890022','gold','data-starter target=\"_blank\" rel=\"noopener noreferrer\"'","'checkout.html?sku=starter','gold','data-starter'")
+text=text.replace('Trao đổi với Victor để xác nhận giá thanh toán và cách nhận tài liệu trước khi chuyển tiền.','Giá Việt Nam: 500.000đ. Xem thông tin đơn và tình trạng thanh toán ở bước tiếp theo.')
+text=text.replace('Hiện bạn liên hệ Victor để xác nhận giá thanh toán, cách nhận tài liệu, thời gian bàn giao và điều kiện hỗ trợ trước khi chuyển tiền.','Bạn mở trang đặt mua để xem thanh toán đã sẵn sàng chưa. Khi hệ thống mở, mỗi đơn có số tiền và mã chuyển khoản riêng. Nếu chưa mở, liên hệ Victor để thống nhất cách mua và nhận tài liệu.')
+slogan='<div class="slogan"><strong>Chỉ bằng một tháng chi phí dùng AI Chat,<br>bạn có cả hệ thống để bắt đầu.</strong><p>500.000đ một lần cho cẩm nang, 5 AI Skills và biểu mẫu thực hành. Không bao gồm phí sử dụng AI. Mức so sánh mang tính tham khảo, tùy gói AI Chat bạn đang dùng.</p></div>'
+text=text.replace('<p class="hero-note">500.000đ một lần · Tự thực hành · Không cần n8n</p>',slogan)
+text=text.replace('<p class="small">Đây là dịch vụ riêng, không nằm trong giá Starter 500.000đ.</p>','<div class="service-price"><span>Gói triển khai riêng</span><strong>7.800.000đ</strong><p>Giá Việt Nam của gói $297. Thống nhất phạm vi và lịch triển khai với Victor trước khi thanh toán.</p><a class="button primary" href="checkout.html?sku=implementation">Xem bước thanh toán ↗</a></div>')
+text=text.replace('Giá giới thiệu của offer là 500.000đ một lần.','Giá Việt Nam: Starter 500.000đ một lần; gói triển khai riêng 7.800.000đ, với phạm vi được thống nhất trước khi mua.')
+checkout='''
+page('checkout.html','Đặt mua OPC — thanh toán VND','Kiểm tra sản phẩm, số tiền và mã chuyển khoản của đơn OPC.',\"\"\"<section class="section"><div class="wrap narrow"><span class="eyebrow">OPC AI PROFITLAB</span><h1>Đơn của bạn.<br>Một bước rõ ràng.</h1><div class="form-panel"><h2 id="checkout-label">Đang kiểm tra sản phẩm…</h2><p id="checkout-price"></p><p id="checkout-message" role="status">Đang kiểm tra tình trạng thanh toán.</p><div id="checkout-consent" hidden><p>Kiểm tra <a href="thong-tin.html">thông tin mua hàng</a> và thống nhất điều kiện hỗ trợ, hoàn tiền với Victor trước khi chuyển khoản.</p><p id="service-warning" hidden>Gói triển khai riêng: chỉ thanh toán sau khi anh/chị và Victor đã thống nhất phạm vi công việc bằng văn bản.</p><label class="consent-label"><input type="checkbox" id="confirm-purchase"> Tôi đã đọc thông tin mua hàng và thống nhất điều kiện áp dụng cho đơn.</label><button class="button primary" id="create-order" type="button">Tạo mã thanh toán</button></div><section id="bank-order" hidden><h3 id="order-state"></h3><dl class="bank-details"><dt>Mã đơn / nội dung chuyển khoản</dt><dd id="order-code"></dd><dt>Số tiền</dt><dd id="order-amount"></dd><dt>Ngân hàng / tài khoản</dt><dd id="order-bank"></dd><dt>Tên người nhận</dt><dd id="account-name"></dd></dl><img id="bank-qr" alt="Mã QR chuyển khoản đúng số tiền và mã đơn" width="320" height="320" hidden><p id="qr-error" class="small" hidden>QR chưa tải được. Bạn có thể chuyển khoản theo thông tin phía trên, giữ nguyên mã đơn.</p><p id="order-instructions" class="small"></p><div class="actions"><button class="button secondary" id="check-payment" type="button">Kiểm tra thanh toán</button><a class="button primary" id="download-product" href="/api/download?sku=starter" hidden>Tải bộ tài liệu</a></div><p class="small">Lưu mã đơn để được hỗ trợ. Quyền kiểm tra và tải trên trình duyệt này được lưu bằng cookie trong 7 ngày; cần hỗ trợ khi đổi thiết bị hoặc mất cookie. Không chia sẻ cookie của bạn.</p></section><p><a class="text-button" href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">Liên hệ Victor qua Zalo ↗</a></p></div></div></section><script defer src="checkout.js"></script>\"\"\")
+'''
+text=text.replace("print('Generated 5 pages in', ROOT/'public')",checkout+"\nprint('Generated 6 pages in', ROOT/'public')")
+path.write_text(text,encoding='utf-8')

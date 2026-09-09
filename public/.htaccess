@@ -1,0 +1,21 @@
+# ==============================================================================
+# OPC AI PROFITLAB — Clean SEO URLs (.html Removal & 301 Redirects)
+# Compatible with Apache 2.4+, LiteSpeed, OpenLiteSpeed & cPanel
+# ==============================================================================
+
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# 1. Permanent 301 redirect /index.html -> /
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index(\.html)?[\s?] [NC]
+RewriteRule ^index(\.html)?$ / [R=301,L]
+
+# 2. Permanent 301 redirect any /path.html -> /path (clean SEO URL)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/([^.]+)\.html[\s?] [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# 3. Internally rewrite /path to /path.html if the file exists
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]

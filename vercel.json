@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/starter.html", "destination": "/starter", "permanent": true },
+    { "source": "/live.html", "destination": "/live", "permanent": true },
+    { "source": "/tu-van.html", "destination": "/tu-van", "permanent": true },
+    { "source": "/thong-tin.html", "destination": "/thong-tin", "permanent": true },
+    { "source": "/checkout.html", "destination": "/checkout", "permanent": true }
+  ]
+}

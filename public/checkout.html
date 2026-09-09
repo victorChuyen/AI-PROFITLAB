@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đặt mua OPC — thanh toán VND | OPC AI PROFITLAB</title>
+  <meta name="description" content="Kiểm tra sản phẩm, số tiền và mã chuyển khoản của đơn OPC.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://go.breaths.live/checkout">
+  <meta property="og:title" content="Đặt mua OPC — thanh toán VND">
+  <meta property="og:description" content="Kiểm tra sản phẩm, số tiền và mã chuyển khoản của đơn OPC.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:image" content="https://go.breaths.live/assets/victor.png">
+  <meta name="theme-color" content="#0a0e1a">
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip">Đến nội dung</a>
+
+  <header class="header">
+    <div class="wrap nav">
+      <a class="brand" href="/" aria-label="OPC AI PROFITLAB — Trang chủ">
+        <img src="assets/mark.svg" width="36" height="36" alt="">
+        <span class="neon-text">OPC <b>AI PROFITLAB</b></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Điều hướng chính">
+        <a href="/">Trang chủ</a>
+        <a href="/starter">Bộ Starter</a>
+        <a href="/live">Xây cùng Victor</a>
+        <a href="/tu-van">Triển khai riêng</a>
+        <a href="/checkout" class="nav-cta-btn" aria-current="page">💳 Thanh toán</a>
+      </nav>
+      <details class="mobile-menu">
+        <summary>☰ Menu</summary>
+        <nav aria-label="Điều hướng di động">
+          <a href="/">Trang chủ</a>
+          <a href="/starter">Bộ Starter</a>
+          <a href="/live">Xây cùng Victor</a>
+          <a href="/tu-van">Triển khai riêng</a>
+          <a href="/checkout" aria-current="page">💳 Thanh toán</a>
+        </nav>
+      </details>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="wrap narrow">
+        <span class="eyebrow">OPC AI PROFITLAB · CỔNG THANH TOÁN TỰ ĐỘNG</span>
+        <h1 class="reveal">Đặt mua nhanh chóng.<br>Kích hoạt tức thì qua VietQR.</h1>
+
+        <div class="form-panel reveal reveal-delay-1">
+          <!-- Package Switcher Tabs -->
+          <div class="package-tabs" id="package-tabs">
+            <button type="button" class="pkg-tab active" id="tab-starter" data-sku="starter">
+              <span class="pkg-tab-title">📦 Bộ Starter 45 Trang</span>
+              <span class="pkg-tab-price">500.000 VNĐ</span>
+            </button>
+            <button type="button" class="pkg-tab" id="tab-implementation" data-sku="implementation">
+              <span class="pkg-tab-title">👑 Triển Khai Riêng 1:1</span>
+              <span class="pkg-tab-price">7.800.000 VNĐ ($297)</span>
+            </button>
+          </div>
+
+          <h2 id="checkout-label">Đang kiểm tra sản phẩm…</h2>
+          <p id="checkout-price"></p>
+          <p id="checkout-message" role="status">Đang tải thông tin thanh toán...</p>
+
+          <!-- Trust badges inline -->
+          <div class="trust-row" style="padding: 16px 0; gap: 24px; justify-content: flex-start;">
+            <div class="trust-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+              Tự động khớp lệnh 3s (SePay)
+            </div>
+            <div class="trust-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              Nhận tài liệu VIP tức thì
+            </div>
+          </div>
+
+          <!-- Checkout Consent & Information Form -->
+          <div id="checkout-consent" hidden>
+            <!-- Lead Capture Form -->
+            <div class="checkout-lead-form">
+              <div class="field-group">
+                <label for="cust-name">👤 Họ và tên của bạn: *</label>
+                <input type="text" id="cust-name" required placeholder="Ví dụ: Trần Ngọc Chuyên">
+              </div>
+              <div class="field-group">
+                <label for="cust-email">📧 Email nhận tài liệu số (VIP Drive): *</label>
+                <input type="email" id="cust-email" required placeholder="Ví dụ: dataphuan@gmail.com">
+              </div>
+              <div class="field-group">
+                <label for="cust-phone">📱 Số điện thoại / Zalo kết nối 1:1: *</label>
+                <input type="tel" id="cust-phone" required placeholder="Ví dụ: 0566260837">
+              </div>
+            </div>
+
+            <!-- Order Bump Add-on (chỉ áp dụng cho gói Starter) -->
+            <div id="order-bump-card" class="order-bump-box" hidden>
+              <div class="bump-header">
+                <span class="bump-badge">🔥 NÂNG CẤP ĐỘC QUYỀN HÔM NAY (TIẾT KIỆM 950K)</span>
+              </div>
+              <label class="bump-label">
+                <input type="checkbox" id="bump-addon">
+                <span class="bump-content">
+                  <strong>CÓ, TÔI MUỐN THÊM: Bộ Prompts Độc Quyền Mở Rộng & 30 Kịch Bản Video Ngắn Triệu View</strong>
+                  <span class="bump-desc">Kho prompts chuyên sâu tạo phễu bán hàng, kịch bản video faceless đa kênh kéo traffic tự nhiên và cẩm nang vận hành tinh gọn.</span>
+                  <span class="bump-price"><s style="color:#94a3b8;">1.200.000đ</s> <b>+250.000 VNĐ</b> (Ưu đãi đặc quyền đi kèm đơn này)</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary-card">
+              <div class="summary-row">
+                <span id="summary-pkg-name">Sản phẩm chính:</span>
+                <span id="summary-main-price">500.000đ</span>
+              </div>
+              <div class="summary-row" id="summary-bump-row" hidden>
+                <span>Nâng cấp Prompts & Video Scripts:</span>
+                <span style="color:#fbbf24;">+250.000đ</span>
+              </div>
+              <div class="summary-row total">
+                <span>Tổng thanh toán:</span>
+                <b id="summary-total-price">500.000 VNĐ</b>
+              </div>
+            </div>
+
+            <p>Kiểm tra <a href="/thong-tin">thông tin mua hàng</a> và thống nhất điều kiện hỗ trợ, hoàn tiền với Victor trước khi chuyển khoản.</p>
+            <p id="service-warning" hidden>Gói triển khai riêng: chỉ thanh toán sau khi anh/chị và Victor đã thống nhất phạm vi công việc bằng văn bản.</p>
+            
+            <label class="consent-label">
+              <input type="checkbox" id="confirm-purchase">
+              Tôi đã đọc thông tin mua hàng và thống nhất điều kiện áp dụng cho đơn.
+            </label>
+            <button class="button gold" id="create-order" type="button" style="width: 100%; font-size: 16px; padding: 14px;">
+              Tạo mã thanh toán VietQR <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <!-- Bank Order & QR Section -->
+          <section id="bank-order" hidden>
+            <div id="order-notice-box" style="margin-bottom: 14px;"></div>
+            <h3 id="order-state" style="margin-bottom: 8px;"></h3>
+            <p id="order-instructions" class="small" style="margin-bottom: 16px;"></p>
+
+            <div class="qr-payment-wrapper" id="qr-payment-wrapper">
+              <div class="qr-box">
+                <div class="qr-card">
+                  <img id="bank-qr" alt="Mã QR chuyển khoản BIDV đúng số tiền và mã đơn" width="260" height="260">
+                  <div class="qr-scan-guide">
+                    <span class="pulse-dot"></span>
+                    <span>Mở App Ngân Hàng quét QR tự động</span>
+                  </div>
+                </div>
+                <p id="qr-error" class="small" hidden style="margin-top: 8px; color: #f87171;">
+                  QR chưa tải được. Bạn có thể chuyển khoản theo thông tin bên cạnh, giữ nguyên mã đơn.
+                </p>
+              </div>
+
+              <div class="bank-info-box">
+                <dl class="bank-details" style="margin: 0;">
+                  <dt>Mã đơn / Nội dung chuyển khoản:</dt>
+                  <dd>
+                    <span id="order-code"></span>
+                    <button type="button" class="copy-pill" id="copy-code-btn" title="Sao chép mã đơn">📋 Sao chép</button>
+                  </dd>
+                  <dt>Số tiền cần chuyển:</dt>
+                  <dd>
+                    <span id="order-amount"></span>
+                    <button type="button" class="copy-pill" id="copy-amount-btn" title="Sao chép số tiền">📋 Sao chép</button>
+                  </dd>
+                  <dt>Ngân hàng & Số tài khoản:</dt>
+                  <dd>
+                    <span id="order-bank"></span>
+                    <button type="button" class="copy-pill" id="copy-acc-btn" title="Sao chép STK">📋 Sao chép</button>
+                  </dd>
+                  <dt>Tên người nhận:</dt>
+                  <dd id="account-name">TRAN NGOC CHUYEN</dd>
+                </dl>
+              </div>
+            </div>
+
+            <div class="actions" id="order-actions" style="margin: 20px 0 16px;">
+              <button class="button secondary" id="check-payment" type="button">
+                🔄 Kiểm tra thanh toán
+              </button>
+              <button class="button gold" id="btn-renew-order" type="button" hidden>
+                🔄 Tạo mã thanh toán mới
+              </button>
+              <button class="button test-pay-btn" id="simulate-pay-btn" type="button" hidden>
+                ⚡ Thử nghiệm thanh toán (Test Pay)
+              </button>
+              <button class="text-button" id="btn-edit-order" type="button" style="margin-left: auto;">
+                ✏️ Đổi thông tin / Đổi gói
+              </button>
+            </div>
+
+            <!-- Instant Success Delivery Card -->
+            <div id="payment-success-card" class="success-card" hidden>
+              <div class="success-icon">🎉</div>
+              <h3>XÁC NHẬN THANH TOÁN THÀNH CÔNG!</h3>
+              <p style="color:#e2e8f0; margin-bottom:16px;">Chào mừng <strong id="success-cust-name">bạn</strong> đã chính thức gia nhập <strong>OPC AI PROFITLAB</strong>!</p>
+              <div class="success-actions">
+                <a class="button gold btn-block" id="download-product" href="/api/download?sku=starter" target="_blank">
+                  📥 TẢI TRỌN BỘ MÃ NGUỒN & EBOOK (.ZIP)
+                </a>
+                <a class="button secondary btn-block" id="drive-vip-link" href="https://drive.google.com/drive/folders/19a9jQCsh59weRub54wevIAfjJfRIW1Rv?usp=sharing" target="_blank" rel="noopener noreferrer">
+                  📂 MỞ KHO GOOGLE DRIVE VIP
+                </a>
+                <a class="button green btn-block" id="zalo-vip-link" href="https://zalo.me/g/opc_vip_profitlab" target="_blank" rel="noopener noreferrer">
+                  💬 THAM GIA NHÓM ZALO HỖ TRỢ VIP 1:1
+                </a>
+              </div>
+              <div class="next-steps-box">
+                <h4>🚀 3 BƯỚC BẮT ĐẦU NGAY TRONG 5 PHÚT:</h4>
+                <ol>
+                  <li>Tải file Ebook Blueprint và xem video <em>"Bắt đầu nhanh trong 5 phút"</em> trên Google Drive.</li>
+                  <li>Bấm vào nút Zalo ở trên để tham gia nhóm Zalo VIP kết nối trực tiếp với Chairman Victor Chuyen.</li>
+                  <li>Hệ thống đã tự động gửi email bàn giao chi tiết tới hộp thư: <strong id="success-cust-email" style="color:#38bdf8;"></strong>.</li>
+                </ol>
+              </div>
+            </div>
+
+            <p class="small">Lưu mã đơn để được hỗ trợ đối soát. Quyền kiểm tra và tải trên trình duyệt này được lưu bằng cookie trong 7 ngày. Không chia sẻ cookie của bạn.</p>
+          </section>
+
+          <p>
+            <a class="text-button" href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">
+              💬 Liên hệ Victor qua Zalo →
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script defer src="checkout.js"></script>
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="wrap footer-grid">
+      <div class="footer-col-brand">
+        <a class="brand" href="/"><span class="neon-text">OPC <b>AI PROFITLAB</b></span></a>
+        <p>Học ít hơn. Bắt tay làm nhiều hơn.<br>Victor Chuyen & Lucky — trợ lý AI.</p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Tài liệu & giải pháp</div>
+        <a href="/starter">Bộ Starter 45 trang</a>
+        <a href="/live">Video & quy trình mẫu</a>
+        <a href="/tu-van">Chuẩn bị yêu cầu dự án</a>
+        <a href="/thong-tin">Thông tin & điều khoản</a>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Đặt lịch tư vấn 1:1</div>
+        <a href="https://cal.com/victorchuyen/ai-starter" target="_blank" rel="noopener noreferrer" class="footer-cal-link">
+          <span>📅 Tư vấn Starter (500K)</span>
+          <span class="cal-badge">Cal.com ↗</span>
+        </a>
+        <a href="https://cal.com/victorchuyen/ai-vip" target="_blank" rel="noopener noreferrer" class="footer-cal-link vip">
+          <span>👑 Tư vấn VIP (7.8 Triệu)</span>
+          <span class="cal-badge">Cal.com ↗</span>
+        </a>
+        <a href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">
+          <span>💬 Chat Zalo trực tiếp →</span>
+        </a>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Kết nối & hỗ trợ</div>
+        <a href="https://www.youtube.com/@opctnc" target="_blank" rel="noopener noreferrer">
+          YouTube Victor Chuyen →
+        </a>
+        <a href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">
+          Zalo: 0989 890 022
+        </a>
+      </div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>© 2026 OPC AI PROFITLAB · go.breaths.live</span>
+      <span>Kết quả phụ thuộc sản phẩm, thị trường và cách thực hiện.</span>
+    </div>
+  </footer>
+</body>
+</html>
