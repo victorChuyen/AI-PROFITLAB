@@ -49,15 +49,69 @@
 
     <!-- ═══ HERO ═══ -->
     <section class="hero">
-      <div class="glow-orb glow-orb-purple" style="top: -80px; left: 20%;"></div>
+      <div class="glow-orb glow-orb-purple" style="top: -80px; left: 15%;"></div>
+      <div class="glow-orb glow-orb-gold" style="bottom: 10px; right: 10%;"></div>
 
-      <div class="wrap live-hero reveal">
-        <span class="eyebrow">Victor xây · Bạn thực hành</span>
-        <h1>Xem một ý tưởng<br>trở thành sản phẩm.</h1>
-        <p class="lead">Theo dõi cách chọn vấn đề, tạo tài nguyên và kiểm tra đầu ra. Dừng video, làm cùng và áp dụng vào ý tưởng của bạn.</p>
-        <a class="button gold" href="https://www.youtube.com/@opctnc" target="_blank" rel="noopener noreferrer">
-          Mở YouTube của Victor <span aria-hidden="true">→</span>
-        </a>
+      <div class="wrap hero-grid live-hero-layout">
+        <!-- Left Column: Headline, Lead, Action Buttons, Trust Badges -->
+        <div class="reveal">
+          <span class="eyebrow">⚡ VICTOR XÂY · BẠN THỰC HÀNH</span>
+          <h1 class="neon-hero">Xem một ý tưởng<br>trở thành sản phẩm.</h1>
+          <p class="lead">Theo dõi cách chọn vấn đề, tạo tài nguyên và kiểm tra đầu ra. Dừng video bất kỳ lúc nào, thực hành song song trên hệ thống của bạn và áp dụng vào dự án thực tế.</p>
+          
+          <div class="actions">
+            <a class="button gold" href="#video-showcase">
+              ▶ Xem 2 Video Workshop <span aria-hidden="true">↓</span>
+            </a>
+            <a class="button outline" href="https://www.youtube.com/@opctnc" target="_blank" rel="noopener noreferrer">
+              Mở YouTube của Victor <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="live-trust-pills">
+            <span class="trust-pill"><span class="pill-icon">🎬</span> 2 Video Full HD</span>
+            <span class="trust-pill"><span class="pill-icon">🛠️</span> Cầm tay chỉ việc</span>
+            <span class="trust-pill"><span class="pill-icon">🎯</span> Không code phức tạp</span>
+            <span class="trust-pill"><span class="pill-icon">💰</span> 100% Thực chiến</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Cinema Spotlight Player (Solves empty hero space on PC) -->
+        <div class="cinema-spotlight-card reveal reveal-delay-1">
+          <div class="cinema-header">
+            <div class="cinema-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="cinema-title">
+              <span class="live-pulse-dot"></span>
+              <span>VIDEO SPOTLIGHT · BÀI GIẢNG 01</span>
+            </div>
+            <div class="cinema-badge">HD 1080p</div>
+          </div>
+          <div class="cinema-screen">
+            <iframe
+              id="yt-spotlight"
+              src="https://www.youtube.com/embed/gq9JBbjpwF0?rel=0&modestbranding=1"
+              title="Làm quen với OPC AI ProfitLab — VSL & Workshop Hướng Dẫn Thực Chiến"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="cinema-footer">
+            <div class="cinema-info">
+              <strong>Làm quen với OPC AI ProfitLab &amp; Bức tranh tổng quan</strong>
+              <span>Victor Chuyen &amp; Lucky CEO · 35 phút thực chiến</span>
+            </div>
+            <a class="button gold small-btn" href="https://www.youtube.com/watch?v=gq9JBbjpwF0" target="_blank" rel="noopener noreferrer">
+              YouTube ↗
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -65,16 +119,17 @@
     <!-- ═══ VIDEO SHOWCASE + PRACTICAL LABS ═══ -->
     <section class="section" id="video-showcase">
       <div class="wrap">
-        <div class="section-heading reveal" style="margin-bottom: 28px;">
+        <div class="section-heading reveal" style="margin-bottom: 36px;">
+          <div class="luxury-badge">💎 THƯ VIỆN BÀI GIẢNG ĐẶC QUYỀN</div>
           <span class="eyebrow" style="color: var(--gold);">Video Thực Chiến Cùng Victor</span>
-          <h2>Xem trực tiếp bài giảng & thực hành ngay trên trang</h2>
+          <h2 class="neon-title">Xem trực tiếp bài giảng &amp; thực hành ngay trên trang</h2>
           <p>Dừng video bất kỳ lúc nào, thực hành song song trên hệ thống của bạn và áp dụng vào dự án thực tế.</p>
         </div>
 
-        <!-- Dual Video Showcase Grid -->
+        <!-- Dual Video Showcase Grid (PC: 2 Cột cân đối, Mobile: 1 Cột chuẩn UX) -->
         <div class="video-showcase-grid">
           
-          <!-- Video 1 -->
+          <!-- Video Card 1 -->
           <div class="video-card reveal">
             <div class="video-embed-wrapper">
               <iframe
@@ -90,11 +145,21 @@
             </div>
             <div class="video-card-content">
               <div class="video-card-badge">
-                <span class="badge-tag">Video 01 · VSL & Workshop</span>
-                <span class="badge-status">● Xem ngay</span>
+                <span class="badge-tag">Video 01 · VSL &amp; Workshop</span>
+                <span class="badge-status live-indicator">● Đang phát</span>
               </div>
-              <h3>Làm quen với OPC AI ProfitLab & Bức tranh tổng quan</h3>
+              <h3>Làm quen với OPC AI ProfitLab &amp; Bức tranh tổng quan</h3>
               <p>Khám phá kiến trúc vận hành cỗ máy doanh nghiệp 1 người với 6 Giám đốc AI, tư duy chọn ngách và giải phóng 90% giờ làm thủ công.</p>
+              
+              <div class="video-takeaways">
+                <div class="takeaway-title">Nội dung cốt lõi:</div>
+                <ul>
+                  <li>⚡ Mô hình Doanh Nghiệp 1 Người vận hành bằng 6 Giám Đốc AI</li>
+                  <li>⚡ Công thức 4 bước: Ý tưởng → Sản phẩm → Hệ thống → Thu nhập</li>
+                  <li>⚡ Phễu chuyển đổi tự động không cần website phức tạp</li>
+                </ul>
+              </div>
+
               <div class="video-card-actions">
                 <a class="button gold" href="https://www.youtube.com/watch?v=gq9JBbjpwF0" target="_blank" rel="noopener noreferrer">
                   Mở trên YouTube <span aria-hidden="true">↗</span>
@@ -106,7 +171,7 @@
             </div>
           </div>
 
-          <!-- Video 2 -->
+          <!-- Video Card 2 -->
           <div class="video-card reveal reveal-delay-1">
             <div class="video-embed-wrapper">
               <iframe
@@ -122,11 +187,21 @@
             </div>
             <div class="video-card-content">
               <div class="video-card-badge">
-                <span class="badge-tag" style="background: rgba(251, 191, 36, 0.15); color: var(--gold); border-color: rgba(251, 191, 36, 0.3);">Video 02 · Thực Hành Triển Khai</span>
-                <span class="badge-status" style="color: var(--gold);">● Thực chiến</span>
+                <span class="badge-tag gold-badge">Video 02 · Thực Hành Triển Khai</span>
+                <span class="badge-status gold-status">● Thực chiến</span>
               </div>
-              <h3>Hướng dẫn thực hành xây dựng & triển khai cỗ máy AI</h3>
+              <h3>Hướng dẫn thực hành xây dựng &amp; triển khai cỗ máy AI</h3>
               <p>Cầm tay chỉ việc: các bước thực thi từ prompt, đóng gói workflow, chuẩn hóa offer đến kết nối kênh phân phối ra đơn thực tế.</p>
+              
+              <div class="video-takeaways">
+                <div class="takeaway-title">Nội dung cốt lõi:</div>
+                <ul>
+                  <li>🛠️ Cầm tay chỉ việc: Thiết lập Prompt, Workflow &amp; Đóng gói Offer</li>
+                  <li>🛠️ Triển khai kênh phân phối tự động ra đơn thực tế</li>
+                  <li>🛠️ Bằng chứng thực tế: Hệ thống tự động hóa tiếp nhận khách 24/7</li>
+                </ul>
+              </div>
+
               <div class="video-card-actions">
                 <a class="button gold" href="https://www.youtube.com/watch?v=PJ-7cFmyo3s" target="_blank" rel="noopener noreferrer">
                   Mở trên YouTube <span aria-hidden="true">↗</span>
@@ -140,18 +215,57 @@
 
         </div>
 
-        <!-- ═══ PREPARATION GUIDE ═══ -->
-        <div class="guide-box reveal">
-          <span class="eyebrow">Chuẩn bị cho buổi tiếp theo</span>
-          <h2 style="font-size: 28px; margin: 8px 0 16px;">Mang theo một ý tưởng.<br>Rời đi với bước tiếp theo.</h2>
-          <p id="live-schedule" style="margin-bottom: 24px;">Lịch buổi tiếp theo sẽ được công bố trên kênh YouTube của Victor. Bạn có thể đăng ký kênh và bật thông báo tại đó.</p>
+        <!-- ═══ CASE STUDY PROOF (HANOTOURS 3D & LIVE PORTAL) ═══ -->
+        <div class="case-study-card reveal" style="margin-top: 48px;">
+          <a class="case-study-thumb" href="https://hanotour.travel4you.app/3d" target="_blank" rel="noopener noreferrer" title="Khám phá Trung Tâm Điều Hành Du Lịch AI 24/7 — Hanotours 3D Command Center">
+            <img src="assets/hanotours-case-study.png" alt="Hanotours Case Study — Bộ Não AI Thứ 2" width="300" height="200" loading="lazy">
+            <span class="thumb-badge">Live 3D Demo</span>
+          </a>
+          <div>
+            <span class="eyebrow" style="color: var(--purple-light);">BẰNG CHỨNG TRIỂN KHAI THẬT</span>
+            <h3 style="margin: 6px 0 10px; font-size: 20px;">Minh Chứng Thực Chiến Từ Hệ Sinh Thái Travel4U &amp; Hanotours</h3>
+            <p style="font-size: 14px; margin: 0 0 16px; color: var(--text-secondary); line-height: 1.6;">Hệ thống 10 site vệ tinh và các dự án đối tác thực tế chứng minh cỗ máy nội dung số, phễu chuyển đổi và thanh toán tự động mang lại kết quả tăng trưởng rõ ràng ngay trong tuần đầu tiên.</p>
+            <div class="case-study-links">
+              <a class="button gold small-btn" href="https://hanotour.travel4you.app/3d" target="_blank" rel="noopener noreferrer">
+                🎮 Hanotours 3D Command Center <span aria-hidden="true">↗</span>
+              </a>
+              <a class="button outline small-btn" href="https://hanotour.travel4you.app/" target="_blank" rel="noopener noreferrer">
+                🌐 Cổng Du Lịch Hanotours Live <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
-          <ol class="reading-list">
-            <li>Chọn một nhóm khách hàng bạn hiểu.</li>
-            <li>Ghi lại một vấn đề họ thường gặp.</li>
-            <li>Mở skill liên quan và làm theo từng bước.</li>
-            <li>Lưu đầu ra, ghi câu hỏi để tiếp tục cải thiện.</li>
-          </ol>
+        <!-- ═══ PREPARATION GUIDE (4-COLUMN ROADMAP ON PC, 1-COLUMN ON MOBILE) ═══ -->
+        <div class="guide-box reveal" style="margin-top: 48px;">
+          <div class="guide-box-header">
+            <span class="eyebrow">Chuẩn bị cho buổi tiếp theo</span>
+            <h2 style="font-size: 26px; margin: 6px 0 12px;">Mang theo một ý tưởng. Rời đi với bước tiếp theo.</h2>
+            <p id="live-schedule" style="margin-bottom: 24px; color: var(--text-secondary);">Lịch buổi tiếp theo sẽ được công bố trên kênh YouTube của Victor. Bạn có thể đăng ký kênh và bật chuông thông báo tại đó.</p>
+          </div>
+
+          <div class="guide-steps-grid">
+            <div class="guide-step-card">
+              <div class="guide-step-badge">BƯỚC 01</div>
+              <h4>Chọn ngách khách hàng</h4>
+              <p>Chọn một nhóm khách hàng cụ thể bạn thực sự am hiểu nỗi đau của họ.</p>
+            </div>
+            <div class="guide-step-card">
+              <div class="guide-step-badge">BƯỚC 02</div>
+              <h4>Ghi lại vấn đề chính</h4>
+              <p>Xác định 1 vấn đề cấp bách khiến họ sẵn sàng chi tiền để giải quyết ngay.</p>
+            </div>
+            <div class="guide-step-card">
+              <div class="guide-step-badge">BƯỚC 03</div>
+              <h4>Mở AI Skill mẫu</h4>
+              <p>Áp dụng bộ 5 AI Skills tiếng Việt và làm theo từng bước hướng dẫn.</p>
+            </div>
+            <div class="guide-step-card">
+              <div class="guide-step-badge">BƯỚC 04</div>
+              <h4>Kiểm tra &amp; tối ưu</h4>
+              <p>Lưu tài nguyên, ghi nhận kết quả và liên tục cải thiện dựa trên số liệu.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
