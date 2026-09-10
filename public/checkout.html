@@ -70,17 +70,42 @@
           <p id="checkout-price"></p>
           <p id="checkout-message" role="status">Đang tải thông tin thanh toán...</p>
 
+          <section class="checkout-fallback" id="manual-checkout" hidden aria-labelledby="manual-checkout-title">
+            <p class="checkout-fallback-kicker">ĐẶT MUA CÓ HỖ TRỢ</p>
+            <h3 id="manual-checkout-title">Đặt Starter cùng Victor qua Zalo</h3>
+            <p id="manual-checkout-copy">Cổng VietQR tự động đang được kiểm thử. Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.</p>
+            <a class="button gold checkout-fallback-cta" id="manual-checkout-cta" href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">
+              Nhắn Victor để đặt Starter — 500.000đ
+            </a>
+            <ol class="checkout-path" aria-label="Lộ trình bắt đầu">
+              <li><strong>Bắt đầu:</strong> nhận playbook và 5 AI Skills.</li>
+              <li><strong>Khi cần thêm:</strong> chọn bộ Prompts &amp; Video Scripts.</li>
+              <li><strong>Khi cần triển khai:</strong> trao đổi phạm vi 1:1 với Victor.</li>
+            </ol>
+            <a class="checkout-proof-link" href="/live">Xem Victor xây hệ thống trong các buổi live →</a>
+            <p class="small">Bạn không cần gửi mật khẩu ngân hàng hay thông tin thẻ qua Zalo.</p>
+          </section>
+
           <!-- Trust badges inline -->
           <div class="trust-row" style="padding: 16px 0; gap: 24px; justify-content: flex-start;">
             <div class="trust-badge">
               <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-              Tự động khớp lệnh 3s (SePay)
+              Xác nhận qua VietQR khi cổng thanh toán được mở
             </div>
             <div class="trust-badge">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-              Nhận tài liệu VIP tức thì
+              Hỗ trợ bàn giao và kích hoạt quyền truy cập
             </div>
           </div>
+
+          <section class="checkout-inclusions" aria-labelledby="checkout-inclusions-title">
+            <h3 id="checkout-inclusions-title">Bộ Starter gồm</h3>
+            <ul>
+              <li>45 trang playbook thực hành bằng tiếng Việt</li>
+              <li>5 AI Skills và 10 biểu mẫu áp dụng lại cho dự án mới</li>
+              <li>Kho prompts cùng hướng dẫn theo video live của Victor</li>
+            </ul>
+          </section>
 
           <!-- Checkout Consent & Information Form -->
           <div id="checkout-consent" hidden>

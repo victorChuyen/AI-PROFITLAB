@@ -60,6 +60,7 @@ function fallbackCopy(text, onSuccess) {
 
 function render(order) {
   currentOrder = order;
+  $('manual-checkout').hidden = true;
   $('checkout-consent').hidden = true;
   $('bank-order').hidden = false;
 
@@ -294,6 +295,23 @@ function switchSku(newSku) {
   initSku();
 }
 
+function showManualCheckout() {
+  const isImplementation = currentSku === 'implementation';
+  const label = isImplementation ? 'gói triển khai riêng' : 'Bộ Starter';
+  const price = isImplementation ? '7.800.000đ' : '500.000đ';
+
+  $('checkout-consent').hidden = true;
+  $('bank-order').hidden = true;
+  $('manual-checkout').hidden = false;
+  $('manual-checkout-title').textContent = `Đặt ${label} cùng Victor qua Zalo`;
+  $('manual-checkout-copy').textContent = isImplementation
+    ? 'Gói triển khai riêng cần thống nhất phạm vi, đầu ra và lịch thực hiện trước khi thanh toán. Nhắn Victor để nhận tư vấn phù hợp.'
+    : 'Cổng VietQR tự động đang được kiểm thử. Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.';
+  $('manual-checkout-cta').textContent = isImplementation
+    ? `Nhắn Victor để trao đổi gói triển khai — ${price}`
+    : `Nhắn Victor để đặt Starter — ${price}`;
+}
+
 $('tab-starter').addEventListener('click', () => switchSku('starter'));
 $('tab-implementation').addEventListener('click', () => switchSku('implementation'));
 
@@ -321,6 +339,7 @@ async function initSku() {
   // Show Order Bump only for Starter Pack
   $('order-bump-card').hidden = currentSku !== 'starter';
   $('service-warning').hidden = currentSku !== 'implementation';
+  $('manual-checkout').hidden = true;
 
   try {
     const cfg = await api(`/api/config?sku=${encodeURIComponent(currentSku)}`);
@@ -341,7 +360,8 @@ async function initSku() {
     }
 
     if (!cfg.enabled) {
-      $('checkout-message').textContent = 'Thanh toán online đang được chuẩn bị. Liên hệ Victor qua Zalo 0989 890 022 để đặt mua.';
+      $('checkout-message').textContent = 'Thanh toán VietQR tự động đang được chuẩn bị. Bạn vẫn có thể đặt mua với hỗ trợ trực tiếp.';
+      showManualCheckout();
       return;
     }
 
@@ -350,6 +370,7 @@ async function initSku() {
     $('checkout-message').textContent = 'Điền thông tin và kiểm tra số tài khoản BIDV 96247688688 trước khi chuyển khoản.';
   } catch (e) {
     $('checkout-message').textContent = e.message;
+    showManualCheckout();
   }
 }
 
