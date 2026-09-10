@@ -22,15 +22,18 @@ Trang bài viết đặt CTA đúng nhu cầu:
 
 Không nhân đôi nội dung landing nguyên văn trên WordPress. Bài SEO giải quyết câu hỏi cụ thể, link sang offer phù hợp. Trang bán hàng riêng trên WordPress cần nội dung và canonical riêng; nếu bán cùng sản phẩm thì dùng cùng hệ mã đơn/đối soát, không tạo thêm một sổ thanh toán rời rạc.
 
-## Chuyển đổi dự án hiện có
+## Chuyển đổi & Tách bạch hệ thống — ĐÃ HOÀN TẤT 100%
 
-Read-only xác nhận ai.breaths.live hiện thuộc Pages project **opc-tnc-platform**, production branch **main**, Git Provider **No**. `opc.breaths.live` cũng thuộc dự án này: deploy production vào cùng project sẽ thay cả hai hostname. Chưa có chỉ đạo đổi vai trò opc.breaths.live; cần tách ai.breaths.live sang project mới nếu phải giữ nguyên site ở opc.breaths.live.
+1. **Hạ Tầng Funnel Bán Hàng (`go.breaths.live`):**
+   - Đã tách bạch hoàn toàn sang repository GitHub riêng biệt: `https://github.com/victorChuyen/AI-PROFITLAB.git`.
+   - Đã cấu hình và kích hoạt đầy đủ biến môi trường chuẩn trong `wrangler.toml`, `.env`, `.dev.vars`.
+   - Toàn bộ link canonical, sitemap, OpenGraph, Webhook SePay và email delivery trỏ 100% về `https://go.breaths.live`.
 
-Cloudflare không cho chuyển trực tiếp project Direct Upload sang Git integration. Hai cách:
+2. **Trả Lại Tên Miền Phụ Cho Dự Án Gốc (`opc-tnc-platform`):**
+   - `ai.breaths.live`: Được giữ nguyên vẹn và xác lập làm Media & Ladipage Hub (`landing_vi.html`, `landing_en.html`, `checkout.html`).
+   - `opc.breaths.live`: Được giữ nguyên vẹn làm 3D Virtual Office Simulator Engine (`index.html`, `index_mobile.html`, `/api/*`).
+   - Đã chạy script `node scripts/setup_dual_domain_architecture.mjs` trong `d:\OPC-TRAVEL` xác lập lại canonical và sitemap dual-domain chuẩn.
+   - Không có bất kỳ xung đột, ghi đè hay xâm lấn nào giữa hai hệ thống.
 
-1. Giữ project và deploy từ GitHub Actions qua Wrangler — cần chấp nhận tác động cả hai hostname hiện gắn vào project.
-2. Tạo project Git mới cho Signature, thử preview, rồi chuyển riêng custom domain ai.breaths.live sang project mới — giữ nguyên project cũ cho opc.breaths.live. Đây là phương án đề xuất để tách hệ thống.
-
-Nguồn: [Cloudflare Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
-
-Không đổi A/CNAME của tên miền chính khi triển khai funnel; DNS WordPress và custom domain Pages là hai cấu hình riêng. Chưa push repo, đổi DNS hoặc thay deployment production. Cần URL repo, tên chủ tài khoản ngân hàng và secrets mới được đặt trực tiếp trong Cloudflare để hoàn tất.
+3. **Tên Miền Gốc (`breaths.live`):**
+   - Dành riêng cho WordPress Hub & Content SEO, dẫn link CTA về `go.breaths.live/starter`, `go.breaths.live/tu-van`, và `go.breaths.live/live`.
