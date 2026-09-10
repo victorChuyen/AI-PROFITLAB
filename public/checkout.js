@@ -58,6 +58,31 @@ function fallbackCopy(text, onSuccess) {
   } catch {}
 }
 
+let countdownInterval = null;
+function startReservationTimer(durationSeconds) {
+  if (countdownInterval) clearInterval(countdownInterval);
+  const timerBox = $('payment-countdown-box');
+  const timerEl = $('payment-timer');
+  if (!timerBox || !timerEl) return;
+  timerBox.hidden = false;
+
+  let remaining = durationSeconds;
+  const tick = () => {
+    if (remaining <= 0) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      timerEl.textContent = '00:00';
+      return;
+    }
+    const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+    const s = (remaining % 60).toString().padStart(2, '0');
+    timerEl.textContent = `${m}:${s}`;
+    remaining--;
+  };
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
 function render(order) {
   currentOrder = order;
   $('manual-checkout').hidden = true;
@@ -96,6 +121,8 @@ function render(order) {
 
   // Handle Expired State (No dead-end!)
   if (isExpired) {
+    if ($('payment-countdown-box')) $('payment-countdown-box').hidden = true;
+    if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
     $('order-notice-box').hidden = false;
     $('order-notice-box').innerHTML = `
       <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; font-size: 13.5px; line-height: 1.5;">
@@ -115,6 +142,8 @@ function render(order) {
 
   if (isPaid) {
     // Show Instant Success Card and hide payment details
+    if ($('payment-countdown-box')) $('payment-countdown-box').hidden = true;
+    if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
     $('payment-success-card').hidden = false;
     $('order-actions').hidden = true;
     if ($('qr-payment-wrapper')) $('qr-payment-wrapper').hidden = true;
@@ -135,6 +164,7 @@ function render(order) {
     if (poll) { clearInterval(poll); poll = null; }
   } else {
     // Pending State
+    startReservationTimer(20 * 60);
     $('payment-success-card').hidden = true;
     $('order-actions').hidden = false;
     if ($('qr-payment-wrapper')) $('qr-payment-wrapper').hidden = false;
@@ -328,9 +358,11 @@ async function initSku() {
 
     // Existing orders check for this SKU
     try {
-      const existing = await api(`/api/order?sku=${encodeURIComponent(currentSku)}`);
-      render(existing);
-      return;
+      const existing = await api(`/api/order?sku=${encodeURIComponent(currentSku)}&check=1`);
+      if (existing && existing.code) {
+        render(existing);
+        return;
+      }
     } catch {
       /* No existing order, show fresh checkout consent */
     }

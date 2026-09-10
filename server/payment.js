@@ -466,7 +466,10 @@ export async function handle(request,rawEnv={}) {
     }
     if(path==='/api/order'&&request.method==='GET') {
       const order=await ownOrder(request,env);
-      return order?json(publicOrder(order,env)):json({error:'Chưa có đơn trên trình duyệt này.'},404);
+      if(order) return json(publicOrder(order,env));
+      const checkMode = new URL(request.url).searchParams.get('check');
+      if(checkMode === '1') return json({exists:false},200);
+      return json({error:'Chưa có đơn trên trình duyệt này.'},404);
     }
     if(path==='/api/download'&&request.method==='GET') {
       const order=await ownOrder(request,env);

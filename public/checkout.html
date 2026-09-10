@@ -171,6 +171,11 @@
           <!-- Bank Order & QR Section -->
           <section id="bank-order" hidden>
             <div id="order-notice-box" style="margin-bottom: 14px;"></div>
+            <div class="timer-box" id="payment-countdown-box" hidden>
+              <span class="timer-icon">⏳</span>
+              <span>Mã đơn &amp; mức giá ưu đãi được giữ chỗ trong:</span>
+              <span class="timer-digits" id="payment-timer">20:00</span>
+            </div>
             <h3 id="order-state" style="margin-bottom: 8px;"></h3>
             <p id="order-instructions" class="small" style="margin-bottom: 16px;"></p>
 
@@ -261,7 +266,7 @@
       </div>
     </section>
 
-    <script defer src="checkout.js?v=20260910-2"></script>
+    <script defer src="checkout.js?v=20260910-3"></script>
   </main>
 
   <!-- ═══ FOOTER ═══ -->

@@ -104,10 +104,9 @@ function initCounters() {
    MOBILE STICKY CTA
    ══════════════════════════════════════ */
 function initStickyCTA() {
-  const sticky = document.getElementById('sticky-cta');
+  const sticky = document.getElementById('sticky-bar') || document.getElementById('sticky-cta');
   if (!sticky) return;
 
-  let lastScroll = 0;
   let ticking = false;
 
   function onScroll() {
@@ -116,9 +115,8 @@ function initStickyCTA() {
 
     requestAnimationFrame(() => {
       const scrollY = window.scrollY;
-      const show = scrollY > 500;
+      const show = scrollY > 420;
       sticky.classList.toggle('visible', show);
-      lastScroll = scrollY;
       ticking = false;
     });
   }
