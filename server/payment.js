@@ -14,6 +14,13 @@ const json = (body,status=200,extra={}) => new Response(JSON.stringify(body),{st
 export async function hash(value) {
   return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
+async function hmacSha256(value, secret) {
+  const key = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(secret), {name: 'HMAC', hash: 'SHA-256'}, false, ['sign']
+  );
+  const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value));
+  return [...new Uint8Array(signature)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
 async function secretMatches(a,b) {
   const [x,y] = await Promise.all([hash(a),hash(b)]);
   let diff=0;for(let i=0;i<x.length;i++)diff|=x.charCodeAt(i)^y.charCodeAt(i);
@@ -68,6 +75,7 @@ export function normalizeEnv(rawEnv = {}) {
     PUBLIC_ORIGIN: rawEnv.PUBLIC_ORIGIN || 'https://go.breaths.live',
     STARTER_ASSET_KEY: rawEnv.STARTER_ASSET_KEY || 'products/starter.zip',
     SEPAY_WEBHOOK_API_KEY: rawEnv.SEPAY_WEBHOOK_API_KEY || '',
+    SEPAY_WEBHOOK_SECRET: rawEnv.SEPAY_WEBHOOK_SECRET || '',
     RATE_LIMIT_SALT: rawEnv.RATE_LIMIT_SALT || '',
     TELEGRAM_BOT_TOKEN: rawEnv.TELEGRAM_BOT_TOKEN || '',
     TELEGRAM_CHAT_ID: rawEnv.TELEGRAM_CHAT_ID || '',
@@ -93,7 +101,7 @@ function configured(env,sku='starter') {
   return (env.CHECKOUT_ENABLED==='true'||env.CHECKOUT_ENABLED===true)&&
     (env.BANK_ACCOUNT||'').length>=6&&
     env.BANK_CODE==='BIDV'&&
-    (env.SEPAY_WEBHOOK_API_KEY||'').length>=24&&
+    ((env.SEPAY_WEBHOOK_SECRET||'').length>=24 || (env.SEPAY_WEBHOOK_API_KEY||'').length>=24)&&
     (env.RATE_LIMIT_SALT||'').length>=24;
 }
 async function body(request) {
@@ -118,23 +126,36 @@ const SEPAY_FALLBACK_KEYS = [];
 
 async function webhook(request,env) {
   if(!env.DB)return json({success:false},503);
+  const raw = await request.text();
+  if(raw.length>16384)return json({success:false},413);
+
+  // HMAC-SHA256 is the preferred SePay production mode. It signs the exact
+  // `timestamp.raw_body` string, so validate before parsing JSON.
+  const hmacSecret = env.SEPAY_WEBHOOK_SECRET || '';
+  const signature = (request.headers.get('X-SePay-Signature') || '').trim();
+  const timestamp = (request.headers.get('X-SePay-Timestamp') || '').trim();
   const auth=(request.headers.get('Authorization')||'').trim();
   const customSecret=(request.headers.get('x-sepay-secret')||'').trim();
-  const validKeys = [env.SEPAY_WEBHOOK_API_KEY, ...SEPAY_FALLBACK_KEYS].filter(Boolean);
-  if (validKeys.length === 0) return json({success:false},503);
-
   let authorized = false;
-  for (const k of validKeys) {
-    if (await secretMatches(auth, `Apikey ${k}`) ||
-        await secretMatches(auth, `Bearer ${k}`) ||
-        (customSecret && await secretMatches(customSecret, k))) {
-      authorized = true;
-      break;
+  if (hmacSecret.length >= 24) {
+    const timestampSeconds = Number(timestamp);
+    if (!Number.isSafeInteger(timestampSeconds) || Math.abs(Math.floor(Date.now()/1000)-timestampSeconds)>300) return json({success:false},401);
+    const expected = `sha256=${await hmacSha256(`${timestamp}.${raw}`, hmacSecret)}`;
+    authorized = await secretMatches(signature, expected);
+  } else {
+    const validKeys = [env.SEPAY_WEBHOOK_API_KEY, ...SEPAY_FALLBACK_KEYS].filter(Boolean);
+    if (validKeys.length === 0) return json({success:false},503);
+    for (const k of validKeys) {
+      if (await secretMatches(auth, `Apikey ${k}`) ||
+          await secretMatches(auth, `Bearer ${k}`) ||
+          (customSecret && await secretMatches(customSecret, k))) {
+        authorized = true;
+        break;
+      }
     }
   }
   if (!authorized) return json({success:false},401);
-  let incoming;try{incoming=await body(request);}catch{return json({success:false},400);}
-  const {data,raw}=incoming;
+  let data;try{data=JSON.parse(raw);}catch{return json({success:false},400);}
   if(!data||typeof data!=='object'||!Number.isSafeInteger(data.id)||data.id<=0||!Number.isSafeInteger(data.transferAmount)||data.transferAmount<=0||
      typeof data.accountNumber!=='string'||typeof data.gateway!=='string'||!['in','out'].includes(data.transferType)||
      (data.content!=null&&typeof data.content!=='string')||(data.code!=null&&typeof data.code!=='string'))return json({success:false},400);

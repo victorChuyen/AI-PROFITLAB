@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
+import {createHmac} from 'node:crypto';
 import {handle} from '../server/payment.js';
 
 function setup(overrides={}) {
@@ -18,7 +19,12 @@ function setup(overrides={}) {
   }
   const payload=order=>({id:1001,gateway:'BIDV',accountNumber:'123456789',transferType:'in',transferAmount:order.amount,content:order.code,code:order.code});
   const hook=(data,key=env.SEPAY_WEBHOOK_API_KEY)=>call('/api/sepay',{method:'POST',headers:{Authorization:'Apikey '+key},body:JSON.stringify(data)});
-  return {env,sqlite,call,create,payload,hook};
+  const hmacHook=(data,secret=env.SEPAY_WEBHOOK_SECRET)=>{
+    const raw=JSON.stringify(data), timestamp=String(Math.floor(Date.now()/1000));
+    const signature='sha256='+createHmac('sha256',secret).update(`${timestamp}.${raw}`).digest('hex');
+    return call('/api/sepay',{method:'POST',headers:{'X-SePay-Timestamp':timestamp,'X-SePay-Signature':signature},body:raw});
+  };
+  return {env,sqlite,call,create,payload,hook,hmacHook};
 }
 test('checkout disabled until configured; arbitrary product rejected',async()=>{
   const s=setup({CHECKOUT_ENABLED:'false'});
@@ -37,6 +43,17 @@ test('server fixes price and origin; unpaid download denied; authenticated exact
   const download=await s.call('/api/download',{headers:{Cookie:cookie}});assert.equal(download.status,200);assert.equal(await download.text(),'private file');
   assert.equal(download.headers.get('Cache-Control'),'no-store');
   assert.equal((await s.call('/api/download')).status,403);
+});
+test('HMAC-SHA256 verifies the raw body and blocks tampered or replayed webhooks',async()=>{
+  const s=setup({SEPAY_WEBHOOK_SECRET:'test-only-hmac-secret-not-real-000'});
+  const {order,cookie}=await s.create();
+  assert.equal((await s.hmacHook(s.payload(order))).status,200);
+  assert.equal((await s.call('/api/download',{headers:{Cookie:cookie}})).status,200);
+  const {order:second}=await s.create('implementation');
+  const raw=JSON.stringify(s.payload(second));
+  const stale='1';
+  const signature='sha256='+createHmac('sha256',s.env.SEPAY_WEBHOOK_SECRET).update(`${stale}.${raw}`).digest('hex');
+  assert.equal((await s.call('/api/sepay',{method:'POST',headers:{'X-SePay-Timestamp':stale,'X-SePay-Signature':signature},body:raw})).status,401);
 });
 test('service price is 7.8m; payment never grants digital download; per-product cookies',async()=>{
   const s=setup();const {order,cookie}=await s.create('implementation');assert.equal(order.amount,7800000);

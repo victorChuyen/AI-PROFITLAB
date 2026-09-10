@@ -9,7 +9,7 @@ This checklist activates bank-transfer checkout without exposing credentials in 
 - Transaction type: **Tiền vào**
 - Data format: **JSON**
 - Select the actual BIDV receiving account (`96247688688`) in the account step.
-- Security: **API Key**. Generate a new key and store it only as a Cloudflare secret.
+- Security: **HMAC-SHA256**. Generate a new Secret Key and store it only as a Cloudflare secret.
 - Enable failure notification to the operational email address.
 
 Do not select `Tất cả`: an outgoing bank transaction is not a customer payment.
@@ -18,8 +18,8 @@ Do not select `Tất cả`: an outgoing bank transaction is not a customer payme
 
 Cloudflare Dashboard → Workers & Pages → `go-breaths-live` → Settings → Variables and Secrets → Production:
 
-- Secret name: `SEPAY_WEBHOOK_API_KEY`
-- Secret value: the fresh SePay API Key
+- Secret name: `SEPAY_WEBHOOK_SECRET`
+- Secret value: the fresh SePay HMAC Secret Key
 
 Never add this value to `wrangler.toml`, a Git commit, a screenshot, or chat.
 
