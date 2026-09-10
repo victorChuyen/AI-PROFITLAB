@@ -3445,4 +3445,281 @@ footer {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   IMAN GADZHI CRO & LUXURY PERSUASION COMPONENTS (go.breaths.live)
+   ═══════════════════════════════════════════════════════════════ */
 
+/* ── 1. The Paradigm Shift: Old Way vs New Way Matrix ── */
+.comparison-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.compare-card {
+  padding: 36px 32px;
+  border-radius: var(--radius-lg);
+  position: relative;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.old-way-card {
+  background: rgba(239, 68, 68, 0.03);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.new-way-card {
+  background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(251, 191, 36, 0.04) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 35px rgba(139, 92, 246, 0.15);
+}
+
+.compare-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.old-tag {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.new-tag {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(251, 191, 36, 0.3));
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+}
+
+.compare-card h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  line-height: 1.35;
+}
+
+.compare-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compare-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.compare-list li span.icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  margin-top: -2px;
+}
+
+/* ── 2. The 6 AI Directors Engine ── */
+.directors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.director-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.director-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.director-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.director-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.director-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.director-role {
+  font-size: 12px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.director-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── 3. The Irresistible Offer Value Stack ── */
+.value-stack-container {
+  background: linear-gradient(180deg, rgba(21, 27, 46, 0.9) 0%, rgba(10, 14, 26, 0.95) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: var(--radius-xl);
+  padding: 44px 36px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  margin-top: 36px;
+}
+
+.value-stack-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 28px 0;
+}
+
+.value-stack-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  gap: 16px;
+}
+
+.value-item-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.value-check-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.value-item-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.value-item-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.value-item-price {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+
+.value-summary-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(251, 191, 36, 0.08));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: var(--radius-lg);
+  margin-top: 24px;
+}
+
+.value-original {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.value-original span {
+  text-decoration: line-through;
+  color: #f87171;
+  font-weight: 700;
+}
+
+.value-today-price {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.value-today-price small {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ── Mobile Responsive for Iman Components ── */
+@media (max-width: 900px) {
+  .comparison-matrix {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .directors-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .directors-grid {
+    grid-template-columns: 1fr;
+  }
+  .value-stack-container {
+    padding: 28px 18px;
+  }
+  .value-stack-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .value-summary-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

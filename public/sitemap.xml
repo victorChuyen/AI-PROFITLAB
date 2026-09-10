@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://go.breaths.live/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://go.breaths.live/assets/og-preview.png</image:loc>
+      <image:title>OPC AI PROFITLAB — Khung Chiến Lược Doanh Nghiệp 1 Người Vận Hành Bằng AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://go.breaths.live/starter</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://go.breaths.live/assets/OPC-START-19usd.webp</image:loc>
+      <image:title>Bộ Starter 45 Trang — 5 AI Skills Tái Sử Dụng</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://go.breaths.live/live</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://go.breaths.live/assets/live.webp</image:loc>
+      <image:title>Xây Cùng Victor — Video Thực Chiến và Quy Trình Mẫu</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://go.breaths.live/tu-van</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://go.breaths.live/assets/VN-OPC-297.webp</image:loc>
+      <image:title>Triển Khai Riêng Cùng Victor — Gói VIP $297</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://go.breaths.live/thong-tin</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

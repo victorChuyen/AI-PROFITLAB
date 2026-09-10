@@ -4,9 +4,14 @@ import functools,threading,json
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).parent
 OUT=ROOT/'qa';OUT.mkdir(exist_ok=True)
-import os
+import os, shutil
 class Quiet(SimpleHTTPRequestHandler):
     def log_message(self,*a): pass
+    def copyfile(self, source, outputfile):
+        try:
+            shutil.copyfileobj(source, outputfile, 64 * 1024)
+        except Exception:
+            pass
     def do_GET(self):
         url_path = self.path.split('?')[0].rstrip('/')
         if url_path and not os.path.splitext(url_path)[1]:
@@ -20,7 +25,7 @@ threading.Thread(target=server.serve_forever,daemon=True).start()
 results=[]
 try:
     with sync_playwright() as pw:
-        browser=pw.chromium.launch(channel='chrome',headless=True,args=['--disable-gpu'])
+        browser=pw.chromium.launch(channel='chrome',headless=True,args=['--disable-gpu','--disable-dev-shm-usage','--no-sandbox'])
         for width in [1440,390,360]:
             page=browser.new_page(viewport={'width':width,'height':1000})
             for file in ['index.html','starter.html','live.html','tu-van.html','thong-tin.html','checkout.html']:

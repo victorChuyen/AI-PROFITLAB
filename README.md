@@ -115,7 +115,7 @@ Tại **Settings** -> **Variables and Secrets**, thêm các biến sau (tham kh�
 - `BANK_ACCOUNT_NAME`: `TRAN NGOC CHUYEN`
 - `CHECKOUT_ENABLED`: `true`
 - `IMPLEMENTATION_ENABLED`: `true`
-- `PUBLIC_ORIGIN`: `https://ai.breaths.live` (hoặc custom domain của bạn)
+- `PUBLIC_ORIGIN`: `https://go.breaths.live` (hoặc custom domain của bạn)
 - `STARTER_ASSET_KEY`: `products/starter.zip`
 - `SEPAY_WEBHOOK_API_KEY`: `spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK`
 - `TELEGRAM_BOT_TOKEN`: `8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk`

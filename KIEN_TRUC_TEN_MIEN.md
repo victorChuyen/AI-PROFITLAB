@@ -1,13 +1,14 @@
-# Kiến trúc đã chốt — Victor 09/09/2026
+# Kiến trúc đã chốt — Chairman Victor (Cập nhật 10/09/2026)
 
-## ai.breaths.live — thị trường Việt Nam
+## go.breaths.live — Tên miền hệ thống bán hàng chính thức (Signature v3.1)
 
-- Funnel OPC Signature v3: giới thiệu, Starter, live, triển khai riêng.
-- Starter: 500.000 VND; triển khai riêng: 7.800.000 VND.
+- Funnel OPC Signature v3.1: Trang chủ, Starter (500.000 VND / $19), Live, Triển khai riêng (7.800.000 VND / $297), Checkout VietQR BIDV SePay.
 - Pages Functions: `/api/config`, `/api/order`, `/api/sepay`, `/api/download`.
-- Webhook SePay: `https://ai.breaths.live/api/sepay`.
-- SITE_ORIGIN và PUBLIC_ORIGIN: `https://ai.breaths.live`.
+- Webhook SePay: `https://go.breaths.live/api/sepay`.
+- SITE_ORIGIN và PUBLIC_ORIGIN: `https://go.breaths.live`.
 - D1: đơn hàng và nhật ký đối soát. R2 private: ZIP trả phí.
+- Quyết định chiến lược: Trả lại 2 subdomain `ai.breaths.live` và `opc.breaths.live` nguyên vẹn cho dự án cũ (`opc-tnc-platform`). Không xâm lấn, không ghi đè.
+
 
 ## breaths.live — WordPress và SEO
 
@@ -15,9 +16,9 @@ Theo chỉ đạo mới, tên miền chính dành cho WordPress viết bài SEO 
 
 Trang bài viết đặt CTA đúng nhu cầu:
 
-- Tự thực hành → `https://ai.breaths.live/starter`.
-- Thuê triển khai → `https://ai.breaths.live/tu-van`.
-- Xem video → `https://ai.breaths.live/live`.
+- Tự thực hành → `https://go.breaths.live/starter`.
+- Thuê triển khai → `https://go.breaths.live/tu-van`.
+- Xem video → `https://go.breaths.live/live`.
 
 Không nhân đôi nội dung landing nguyên văn trên WordPress. Bài SEO giải quyết câu hỏi cụ thể, link sang offer phù hợp. Trang bán hàng riêng trên WordPress cần nội dung và canonical riêng; nếu bán cùng sản phẩm thì dùng cùng hệ mã đơn/đối soát, không tạo thêm một sổ thanh toán rời rạc.
 

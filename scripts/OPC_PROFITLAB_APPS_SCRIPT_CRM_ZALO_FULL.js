@@ -29,7 +29,7 @@ var CONFIG = {
   DRIVE_VIP_LINK: "https://drive.google.com/drive/folders/19a9jQCsh59weRub54wevIAfjJfRIW1Rv?usp=sharing",
   ZALO_VIP_GROUP: "https://zalo.me/g/opc_vip_profitlab",
   CAL_COACHING_LINK: "https://cal.com/victorchuyen/coachai",
-  WEB_LANDING: "https://ai.breaths.live/landing_vi",
+  WEB_LANDING: "https://go.breaths.live/landing_vi",
   TELEGRAM_BOT_TOKEN: "" // Removed exposed token; rotate it at its provider.
   ,
   TELEGRAM_CHAT_ID: "-1001812138135"
@@ -376,7 +376,7 @@ function sendEmail1Delivery(cust) {
                       <p style="color: #581c87 !important; font-size: 13px; line-height: 1.6; margin: 0 0 12px 0;">
                         Nếu bạn muốn tiết kiệm toàn bộ thời gian và để Victor Chuyen cùng Trợ lý AI Lucky trực tiếp thiết kế, cài đặt hạ tầng Cloudflare, kết nối cổng thanh toán SePay và bàn giao cỗ máy Doanh nghiệp 1 Người hoàn chỉnh:
                       </p>
-                      <a href="https://ai.breaths.live/tu-van" target="_blank" style="color: #9333ea !important; font-weight: 700; font-size: 13px; text-decoration: underline;">
+                      <a href="https://go.breaths.live/tu-van" target="_blank" style="color: #9333ea !important; font-weight: 700; font-size: 13px; text-decoration: underline;">
                         👉 Khám phá Gói Done-For-You $297 (7.800.000đ — Giới hạn 99 suất)
                       </a>
                     </td>
@@ -407,7 +407,7 @@ function sendEmail1Delivery(cust) {
                   © 2026 OPC AI PROFITLAB — OPC Digital Empire. Mọi quyền được bảo lưu.
                 </p>
                 <p style="color: #94a3b8 !important; font-size: 12px; margin: 0;">
-                  Hotline hỗ trợ: <span style="color: #475569 !important; font-weight: 600;">${CONFIG.ADMIN_PHONE}</span> | Bộ Starter: <a href="https://ai.breaths.live/starter" target="_blank" style="color: #2563eb !important; text-decoration: none;">ai.breaths.live/starter</a>
+                  Hotline hỗ trợ: <span style="color: #475569 !important; font-weight: 600;">${CONFIG.ADMIN_PHONE}</span> | Bộ Starter: <a href="https://go.breaths.live/starter" target="_blank" style="color: #2563eb !important; text-decoration: none;">go.breaths.live/starter</a>
                 </p>
               </td>
             </tr>
@@ -480,13 +480,13 @@ function sendEmail2QuickWin(toEmail, name) {
 
 function sendEmail3OrderBump(toEmail, name) {
   var subject = "⚡ Ưu đãi nâng cấp độc quyền: Bộ Prompts Độc Quyền & 30 Kịch Bản Video Ngắn Triển Khai Nhanh";
-  var body = "Chào " + name + ",\n\nĐể giúp bạn rút ngắn thời gian chuẩn bị ra mắt sản phẩm và có ngay kịch bản kéo khách tự nhiên, tôi mở quyền nâng cấp gói ACCELERATOR BUMP (Trọn bộ prompts thực chiến mở rộng + 30 kịch bản video ngắn faceless).\n\n💰 Ưu đãi học viên: Chỉ 250.000 VNĐ (Tiết kiệm 80%).\n\n👉 Nâng cấp ngay tại: https://ai.breaths.live/starter#bai-mau\n\nTrân trọng,\nVictor Chuyen (0989 890 022)";
+  var body = "Chào " + name + ",\n\nĐể giúp bạn rút ngắn thời gian chuẩn bị ra mắt sản phẩm và có ngay kịch bản kéo khách tự nhiên, tôi mở quyền nâng cấp gói ACCELERATOR BUMP (Trọn bộ prompts thực chiến mở rộng + 30 kịch bản video ngắn faceless).\n\n💰 Ưu đãi học viên: Chỉ 250.000 VNĐ (Tiết kiệm 80%).\n\n👉 Nâng cấp ngay tại: https://go.breaths.live/starter#bai-mau\n\nTrân trọng,\nVictor Chuyen (0989 890 022)";
   MailApp.sendEmail(toEmail, subject, body);
 }
 
 function sendEmail4Coaching(toEmail, name) {
   var subject = "⭐ Bạn muốn Victor Chuyen trực tiếp cài đặt cỗ máy Doanh nghiệp 1 Người cho bạn?";
-  var body = "Chào " + name + ",\n\nNếu bạn không có thời gian tự mày mò cài đặt hạ tầng kỹ thuật và muốn sở hữu giải pháp chìa khóa trao tay:\n\nVictor Chuyen cùng Trợ lý AI Lucky có thể trực tiếp thiết kế, cài đặt hạ tầng Cloudflare, kết nối cổng thanh toán SePay và bàn giao cỗ máy Doanh nghiệp 1 Người hoàn chỉnh cho bạn.\n\n👉 Khám phá Gói Triển Khai Riêng Done-For-You $297 (7.800.000đ — Giới hạn 99 suất): https://ai.breaths.live/tu-van\n\nHoặc nhắn tin trực tiếp Zalo với tôi: 0989 890 022\n\nVictor Chuyen\nFounder, OPC Digital Empire";
+  var body = "Chào " + name + ",\n\nNếu bạn không có thời gian tự mày mò cài đặt hạ tầng kỹ thuật và muốn sở hữu giải pháp chìa khóa trao tay:\n\nVictor Chuyen cùng Trợ lý AI Lucky có thể trực tiếp thiết kế, cài đặt hạ tầng Cloudflare, kết nối cổng thanh toán SePay và bàn giao cỗ máy Doanh nghiệp 1 Người hoàn chỉnh cho bạn.\n\n👉 Khám phá Gói Triển Khai Riêng Done-For-You $297 (7.800.000đ — Giới hạn 99 suất): https://go.breaths.live/tu-van\n\nHoặc nhắn tin trực tiếp Zalo với tôi: 0989 890 022\n\nVictor Chuyen\nFounder, OPC Digital Empire";
   MailApp.sendEmail(toEmail, subject, body);
 }
 

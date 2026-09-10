@@ -132,7 +132,7 @@ async function main() {
     ['Gói 2: Order Bump', '250.000 VNĐ', 'Nâng cấp 50 Workflows n8n + 30 Video Scripts Triệu View'],
     ['Gói 3: Starter + Bump', '750.000 VNĐ', 'Combo đầy đủ Starter Pack + Order Bump'],
     ['Gói 4: Coaching 1:1', '7.800.000 VNĐ', 'Sprint 7 Ngày cố vấn 1:1 cùng Chairman Victor Chuyen'],
-    ['Link Landing Page', 'https://ai.breaths.live/landing_vi', 'Landing page chính thức tiếng Việt'],
+    ['Link Landing Page', 'https://go.breaths.live/landing_vi', 'Landing page chính thức tiếng Việt'],
     ['Link Checkout Động', 'https://go.breaths.live/checkout', 'Trang thanh toán VietQR động'],
     ['Link Demo Travel4U', 'https://hanotour.travel4you.app/', 'Hệ thống 10 website vệ tinh du lịch triệu view'],
     ['Link Demo 3D Office', 'https://hanotour.travel4you.app/3d', 'Văn phòng không gian số 3D toàn cầu'],
@@ -211,7 +211,7 @@ async function main() {
       'Thúc đẩy Quick Win trong 24h, hướng dẫn mở Skill 01 (Chọn ngách & cơ hội) và kiểm tra chuẩn 6/6 FACETS',
       'Nhắc nhở người học không để tài liệu phủ bụi. Thực hành nhiệm vụ 5 phút sao chép Prompt thực chiến vào trợ lý AI để phân tích 3 ngách thị trường ít cạnh tranh nhất.',
       '🎯 XEM HƯỚNG DẪN SKILL 01',
-      'https://ai.breaths.live/starter#bai-mau',
+      'https://go.breaths.live/starter#bai-mau',
       'ACTIVE'
     ],
     [
@@ -222,7 +222,7 @@ async function main() {
       'Upsell gói Order Bump (+250.000đ) tăng tốc kéo khách tự nhiên và ra mắt sản phẩm',
       'Giới thiệu gói tăng tốc kéo khách: Trọn bộ prompts thực chiến mở rộng + 30 kịch bản video ngắn faceless giúp chuẩn bị ra mắt sản phẩm thần tốc. Ưu đãi 250.000đ.',
       '⚡ NÂNG CẤP GÓI ACCELERATOR BUMP 250K',
-      'https://ai.breaths.live/starter#bai-mau',
+      'https://go.breaths.live/starter#bai-mau',
       'ACTIVE'
     ],
     [
@@ -233,7 +233,7 @@ async function main() {
       'Giới thiệu Gói Triển Khai Riêng Done-For-You $297 (7.800.000đ — Giới hạn 99 suất)',
       'Bàn giao trọn gói chìa khóa trao tay: Victor Chuyen cùng Trợ lý AI Lucky trực tiếp thiết kế, cài đặt hạ tầng Cloudflare, kết nối cổng thanh toán SePay và hoàn thiện cỗ máy Doanh nghiệp 1 Người.',
       '👑 KHÁM PHÁ GÓI TRIỂN KHAI RIÊNG $297',
-      'https://ai.breaths.live/tu-van',
+      'https://go.breaths.live/tu-van',
       'ACTIVE'
     ]
   ];
@@ -257,7 +257,7 @@ async function main() {
       'Tức thì khi Sepay khớp lệnh',
       'Zalo Cá Nhân (0989 890 022) / Zalo OA',
       'Xác nhận đơn hàng thành công & bàn giao link',
-      '🎉 [XÁC NHẬN ĐƠN HÀNG THÀNH CÔNG]\nChào anh/chị {{customer_name}}, Victor Chuyen xin xác nhận đã nhận thành công {{amount}}đ cho đơn hàng {{order_code}}.\n\nToàn bộ kho tài liệu Bộ Starter VIP đã sẵn sàng:\n📂 Link tải trọn bộ Google Drive: {{drive_vip_link}}\n🌐 Trải nghiệm Prompt AI & 5 Skills: https://ai.breaths.live/starter#bai-mau\n💬 Kênh Zalo hỗ trợ trực tiếp cùng Victor: 0989 890 022\n\nEm đã gửi thêm 1 bản bàn giao chi tiết qua email: {{customer_email}}. Anh/chị kiểm tra hộp thư nhé! Cần hỗ trợ gấp cứ nhắn thẳng Zalo này cho em. 🚀',
+      '🎉 [XÁC NHẬN ĐƠN HÀNG THÀNH CÔNG]\nChào anh/chị {{customer_name}}, Victor Chuyen xin xác nhận đã nhận thành công {{amount}}đ cho đơn hàng {{order_code}}.\n\nToàn bộ kho tài liệu Bộ Starter VIP đã sẵn sàng:\n📂 Link tải trọn bộ Google Drive: {{drive_vip_link}}\n🌐 Trải nghiệm Prompt AI & 5 Skills: https://go.breaths.live/starter#bai-mau\n💬 Kênh Zalo hỗ trợ trực tiếp cùng Victor: 0989 890 022\n\nEm đã gửi thêm 1 bản bàn giao chi tiết qua email: {{customer_email}}. Anh/chị kiểm tra hộp thư nhé! Cần hỗ trợ gấp cứ nhắn thẳng Zalo này cho em. 🚀',
       'Bấm vào link Drive & mở file Cẩm nang 45 trang',
       'ACTIVE'
     ],
@@ -284,7 +284,7 @@ async function main() {
       'Sau 4-5 ngày kể từ khi thanh toán',
       'Zalo Cá Nhân (0989 890 022)',
       'Giới thiệu Gói Triển Khai Riêng Done-For-You $297',
-      'Chào {{customer_name}}, nếu anh/chị không có thời gian tự cài đặt hạ tầng kỹ thuật và muốn sở hữu trọn gói cỗ máy Doanh nghiệp 1 Người tự động hóa (Hạ tầng Cloudflare, cổng thanh toán SePay, cỗ máy đóng gói sản phẩm số):\n\nAnh/chị xem chi tiết Gói Triển Khai Riêng Done-For-You $297 (7.800.000đ — Giới hạn 99 suất) tại https://ai.breaths.live/tu-van hoặc nhắn em tư vấn riêng nhé! 👑',
+      'Chào {{customer_name}}, nếu anh/chị không có thời gian tự cài đặt hạ tầng kỹ thuật và muốn sở hữu trọn gói cỗ máy Doanh nghiệp 1 Người tự động hóa (Hạ tầng Cloudflare, cổng thanh toán SePay, cỗ máy đóng gói sản phẩm số):\n\nAnh/chị xem chi tiết Gói Triển Khai Riêng Done-For-You $297 (7.800.000đ — Giới hạn 99 suất) tại https://go.breaths.live/tu-van hoặc nhắn em tư vấn riêng nhé! 👑',
       'Xem chi tiết Gói Triển Khai Riêng tại /tu-van',
       'ACTIVE'
     ]

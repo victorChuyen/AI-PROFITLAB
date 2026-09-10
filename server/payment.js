@@ -65,7 +65,7 @@ export function normalizeEnv(rawEnv = {}) {
     BANK_ACCOUNT_NAME: rawEnv.BANK_ACCOUNT_NAME || 'TRAN NGOC CHUYEN',
     CHECKOUT_ENABLED: rawEnv.CHECKOUT_ENABLED || 'true',
     IMPLEMENTATION_ENABLED: rawEnv.IMPLEMENTATION_ENABLED || 'true',
-    PUBLIC_ORIGIN: rawEnv.PUBLIC_ORIGIN || 'https://ai.breaths.live',
+    PUBLIC_ORIGIN: rawEnv.PUBLIC_ORIGIN || 'https://go.breaths.live',
     STARTER_ASSET_KEY: rawEnv.STARTER_ASSET_KEY || 'products/starter.zip',
     SEPAY_WEBHOOK_API_KEY: rawEnv.SEPAY_WEBHOOK_API_KEY || 'spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK',
     RATE_LIMIT_SALT: rawEnv.RATE_LIMIT_SALT || 'opc_rate_limit_secret_salt_2026_victory',

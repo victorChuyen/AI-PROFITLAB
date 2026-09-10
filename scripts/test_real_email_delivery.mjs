@@ -187,7 +187,7 @@ function buildDeliveryHtml() {
                     <p style="color: #581c87 !important; font-size: 13px; line-height: 1.6; margin: 0 0 12px 0;">
                       Nếu bạn muốn tiết kiệm toàn bộ thời gian và để Victor Chuyen cùng Trợ lý AI Lucky trực tiếp thiết kế, cài đặt hạ tầng Cloudflare, kết nối cổng thanh toán SePay và bàn giao cỗ máy Doanh nghiệp 1 Người hoàn chỉnh:
                     </p>
-                    <a href="https://ai.breaths.live/tu-van" target="_blank" style="color: #9333ea !important; font-weight: 700; font-size: 13px; text-decoration: underline;">
+                    <a href="https://go.breaths.live/tu-van" target="_blank" style="color: #9333ea !important; font-weight: 700; font-size: 13px; text-decoration: underline;">
                       👉 Khám phá Gói Done-For-You $297 (7.800.000đ — Giới hạn 99 suất)
                     </a>
                   </td>
@@ -220,7 +220,7 @@ function buildDeliveryHtml() {
                 © 2026 OPC AI PROFITLAB — OPC Digital Empire. Mọi quyền được bảo lưu.
               </p>
               <p style="color: #94a3b8 !important; font-size: 12px; margin: 0;">
-                Hotline hỗ trợ: <span style="color: #475569 !important; font-weight: 600;">0989 890 022</span> | Bộ Starter: <a href="https://ai.breaths.live/starter" target="_blank" style="color: #2563eb !important; text-decoration: none;">ai.breaths.live/starter</a>
+                Hotline hỗ trợ: <span style="color: #475569 !important; font-weight: 600;">0989 890 022</span> | Bộ Starter: <a href="https://go.breaths.live/starter" target="_blank" style="color: #2563eb !important; text-decoration: none;">go.breaths.live/starter</a>
               </p>
             </td>
           </tr>
