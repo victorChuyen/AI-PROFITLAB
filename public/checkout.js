@@ -79,7 +79,7 @@ function render(order) {
   const isPending = order.status === 'pending';
 
   const labels = {
-    pending: 'Đang chờ chuyển khoản ngân hàng qua VietQR',
+    pending: 'Đang chờ bạn hoàn tất thanh toán',
     paid: 'Đã xác nhận thanh toán thành công 🎉',
     expired: 'Mã thanh toán đã hết thời gian chờ',
     review: 'Giao dịch đang được đối soát thủ công',
@@ -100,12 +100,11 @@ function render(order) {
     $('order-notice-box').innerHTML = `
       <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; font-size: 13.5px; line-height: 1.5;">
         ⚠️ <b>Mã đơn ${order.code} đã hết hạn thời gian giữ chỗ (20 phút).</b><br>
-        Vui lòng bấm nút <b>"Tạo mã thanh toán mới"</b> bên dưới để hệ thống sinh mã VietQR mới tức thì.
+        Vui lòng bấm nút <b>"Tạo mã thanh toán mới"</b> bên dưới để nhận mã đơn mới.
       </div>
     `;
     $('order-instructions').textContent = 'Mã chuyển khoản trước đó đã hết hạn để đảm bảo an toàn giao dịch.';
     $('btn-renew-order').hidden = false;
-    $('simulate-pay-btn').hidden = true;
     $('check-payment').hidden = true;
     if (poll) { clearInterval(poll); poll = null; }
     return;
@@ -142,9 +141,7 @@ function render(order) {
     $('order-state').hidden = false;
     $('order-instructions').hidden = false;
     $('check-payment').hidden = false;
-    const isDev = new URLSearchParams(location.search).get('dev') === '1';
-    $('simulate-pay-btn').hidden = !isDev;
-    $('order-instructions').textContent = `Chuyển đúng số tiền ${money(order.amount)}, giữ nguyên nội dung ${order.code}. Hệ thống SePay tự động xác nhận từ ngân hàng BIDV trong 3-5 giây.`;
+    $('order-instructions').textContent = `Chuyển đúng số tiền ${money(order.amount)} và giữ nguyên nội dung ${order.code}. Chúng tôi sẽ xác nhận đơn ngay khi giao dịch được ghi nhận.`;
 
     // Realtime polling every 3s
     if (!poll) {
@@ -178,27 +175,6 @@ async function check() {
 $('check-payment').addEventListener('click', check);
 $('bank-qr').addEventListener('error', () => { $('qr-error').hidden = false; });
 
-// Simulate payment test handler
-$('simulate-pay-btn').addEventListener('click', async () => {
-  if (!currentOrder || !currentOrder.code) return;
-  const btn = $('simulate-pay-btn');
-  const originalText = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = '⏳ Đang xác nhận SePay...';
-  $('checkout-message').textContent = '⚡ Đang gửi tín hiệu ngân hàng giả lập...';
-
-  try {
-    const res = await api(`/api/test-pay?code=${encodeURIComponent(currentOrder.code)}`);
-    $('checkout-message').textContent = `✅ ${res.message}`;
-    await check();
-  } catch (err) {
-    $('checkout-message').textContent = `Lỗi thử nghiệm: ${err.message}`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = originalText;
-  }
-});
-
 // Renew / Edit Order Handlers
 function reopenFormWithPrefill() {
   if (currentOrder) {
@@ -210,7 +186,7 @@ function reopenFormWithPrefill() {
   }
   $('bank-order').hidden = true;
   $('checkout-consent').hidden = false;
-  $('checkout-message').textContent = 'Vui lòng kiểm tra lại thông tin và bấm Tạo mã thanh toán VietQR để nhận mã mới.';
+  $('checkout-message').textContent = 'Vui lòng kiểm tra lại thông tin và bấm Tạo mã thanh toán để nhận mã mới.';
   if (poll) { clearInterval(poll); poll = null; }
 }
 
@@ -247,7 +223,7 @@ $('create-order').addEventListener('click', async () => {
     return;
   }
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    $('checkout-message').textContent = '⚠️ Vui lòng nhập email hợp lệ để nhận link Google Drive VIP.';
+    $('checkout-message').textContent = '⚠️ Vui lòng nhập email hợp lệ để nhận hướng dẫn truy cập tài liệu.';
     emailInput.focus();
     return;
   }
@@ -264,7 +240,7 @@ $('create-order').addEventListener('click', async () => {
 
   const isBump = $('bump-addon')?.checked && currentSku === 'starter';
   $('create-order').disabled = true;
-  $('checkout-message').textContent = 'Đang khởi tạo mã thanh toán VietQR an toàn…';
+  $('checkout-message').textContent = 'Đang tạo mã thanh toán an toàn…';
 
   try {
     const orderData = await api(`/api/order?sku=${encodeURIComponent(currentSku)}`, {
@@ -306,7 +282,7 @@ function showManualCheckout() {
   $('manual-checkout-title').textContent = `Đặt ${label} cùng Victor qua Zalo`;
   $('manual-checkout-copy').textContent = isImplementation
     ? 'Gói triển khai riêng cần thống nhất phạm vi, đầu ra và lịch thực hiện trước khi thanh toán. Nhắn Victor để nhận tư vấn phù hợp.'
-    : 'Cổng VietQR tự động đang được kiểm thử. Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.';
+    : 'Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.';
   $('manual-checkout-cta').textContent = isImplementation
     ? `Nhắn Victor để trao đổi gói triển khai — ${price}`
     : `Nhắn Victor để đặt Starter — ${price}`;
@@ -360,14 +336,14 @@ async function initSku() {
     }
 
     if (!cfg.enabled) {
-      $('checkout-message').textContent = 'Thanh toán VietQR tự động đang được chuẩn bị. Bạn vẫn có thể đặt mua với hỗ trợ trực tiếp.';
+      $('checkout-message').textContent = 'Bạn vẫn có thể đặt mua với hỗ trợ trực tiếp từ Victor.';
       showManualCheckout();
       return;
     }
 
     $('bank-order').hidden = true;
     $('checkout-consent').hidden = false;
-    $('checkout-message').textContent = 'Điền thông tin và kiểm tra số tài khoản BIDV 96247688688 trước khi chuyển khoản.';
+    $('checkout-message').textContent = 'Điền thông tin để nhận mã thanh toán riêng cho đơn hàng của bạn.';
   } catch (e) {
     $('checkout-message').textContent = e.message;
     showManualCheckout();

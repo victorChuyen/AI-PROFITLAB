@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Thanh Toán An Toàn VietQR — OPC AI PROFITLAB</title>
-  <meta name="description" content="Trang thanh toán trực tuyến VietQR SePay tự động mở khóa bộ tài nguyên OPC AI PROFITLAB.">
+  <title>Hoàn tất đơn hàng — OPC AI PROFITLAB</title>
+  <meta name="description" content="Hoàn tất đơn hàng OPC AI PROFITLAB và nhận hướng dẫn truy cập bộ tài liệu của bạn.">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://go.breaths.live/checkout">
-  <meta property="og:title" content="Thanh Toán An Toàn VietQR — OPC AI PROFITLAB">
-  <meta property="og:description" content="Trang thanh toán trực tuyến VietQR SePay tự động mở khóa bộ tài nguyên.">
+  <meta property="og:title" content="Hoàn tất đơn hàng — OPC AI PROFITLAB">
+  <meta property="og:description" content="Hoàn tất đơn hàng và nhận hướng dẫn truy cập bộ tài liệu OPC AI PROFITLAB.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="vi_VN">
   <meta property="og:image" content="https://go.breaths.live/assets/og-preview.png">
@@ -50,8 +50,8 @@
   <main id="main">
     <section class="section">
       <div class="wrap narrow">
-        <span class="eyebrow">OPC AI PROFITLAB · CỔNG THANH TOÁN TỰ ĐỘNG</span>
-        <h1 class="reveal">Đặt mua nhanh chóng.<br>Kích hoạt tức thì qua VietQR.</h1>
+        <span class="eyebrow">OPC AI PROFITLAB · HOÀN TẤT ĐƠN HÀNG</span>
+        <h1 class="reveal">Hoàn tất đơn hàng.<br>Bắt đầu xây ngay.</h1>
 
         <div class="form-panel reveal reveal-delay-1">
           <!-- Package Switcher Tabs -->
@@ -73,7 +73,7 @@
           <section class="checkout-fallback" id="manual-checkout" hidden aria-labelledby="manual-checkout-title">
             <p class="checkout-fallback-kicker">ĐẶT MUA CÓ HỖ TRỢ</p>
             <h3 id="manual-checkout-title">Đặt Starter cùng Victor qua Zalo</h3>
-            <p id="manual-checkout-copy">Cổng VietQR tự động đang được kiểm thử. Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.</p>
+            <p id="manual-checkout-copy">Bạn vẫn có thể đặt mua ngay; Victor sẽ xác nhận đơn, gửi hướng dẫn thanh toán và bàn giao tài liệu.</p>
             <a class="button gold checkout-fallback-cta" id="manual-checkout-cta" href="https://zalo.me/0989890022" target="_blank" rel="noopener noreferrer">
               Nhắn Victor để đặt Starter — 500.000đ
             </a>
@@ -90,7 +90,7 @@
           <div class="trust-row" style="padding: 16px 0; gap: 24px; justify-content: flex-start;">
             <div class="trust-badge">
               <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-              Xác nhận qua VietQR khi cổng thanh toán được mở
+              Thanh toán an toàn, có mã đơn riêng
             </div>
             <div class="trust-badge">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
@@ -218,9 +218,6 @@
               <button class="button gold" id="btn-renew-order" type="button" hidden>
                 🔄 Tạo mã thanh toán mới
               </button>
-              <button class="button test-pay-btn" id="simulate-pay-btn" type="button" hidden>
-                ⚡ Thử nghiệm thanh toán (Test Pay)
-              </button>
               <button class="text-button" id="btn-edit-order" type="button" style="margin-left: auto;">
                 ✏️ Đổi thông tin / Đổi gói
               </button>
@@ -233,10 +230,10 @@
               <p style="color:#e2e8f0; margin-bottom:16px;">Chào mừng <strong id="success-cust-name">bạn</strong> đã chính thức gia nhập <strong>OPC AI PROFITLAB</strong>!</p>
               <div class="success-actions">
                 <a class="button gold btn-block" id="download-product" href="/api/download?sku=starter" target="_blank">
-                  📥 TẢI TRỌN BỘ MÃ NGUỒN & EBOOK (.ZIP)
+              📥 TẢI BỘ TÀI LIỆU OPC
                 </a>
                 <a class="button secondary btn-block" id="drive-vip-link" href="https://drive.google.com/drive/folders/19a9jQCsh59weRub54wevIAfjJfRIW1Rv?usp=sharing" target="_blank" rel="noopener noreferrer">
-                  📂 MỞ KHO GOOGLE DRIVE VIP
+              📂 MỞ KHU VỰC TÀI LIỆU VIP
                 </a>
                 <a class="button green btn-block" id="zalo-vip-link" href="https://zalo.me/g/opc_vip_profitlab" target="_blank" rel="noopener noreferrer">
                   💬 THAM GIA NHÓM ZALO HỖ TRỢ VIP 1:1
@@ -245,9 +242,9 @@
               <div class="next-steps-box">
                 <h4>🚀 3 BƯỚC BẮT ĐẦU NGAY TRONG 5 PHÚT:</h4>
                 <ol>
-                  <li>Tải file Ebook Blueprint và xem video <em>"Bắt đầu nhanh trong 5 phút"</em> trên Google Drive.</li>
+                  <li>Tải Ebook Blueprint và xem video <em>"Bắt đầu nhanh trong 5 phút"</em>.</li>
                   <li>Bấm vào nút Zalo ở trên để tham gia nhóm Zalo VIP kết nối trực tiếp với Chairman Victor Chuyen.</li>
-                  <li>Hệ thống đã tự động gửi email bàn giao chi tiết tới hộp thư: <strong id="success-cust-email" style="color:#38bdf8;"></strong>.</li>
+                  <li>Kiểm tra email để nhận hướng dẫn truy cập chi tiết: <strong id="success-cust-email" style="color:#38bdf8;"></strong>.</li>
                 </ol>
               </div>
             </div>
