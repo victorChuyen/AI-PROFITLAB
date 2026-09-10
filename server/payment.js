@@ -63,14 +63,14 @@ export function normalizeEnv(rawEnv = {}) {
     BANK_ACCOUNT: rawEnv.BANK_ACCOUNT || '96247688688',
     BANK_CODE: rawEnv.BANK_CODE || 'BIDV',
     BANK_ACCOUNT_NAME: rawEnv.BANK_ACCOUNT_NAME || 'TRAN NGOC CHUYEN',
-    CHECKOUT_ENABLED: rawEnv.CHECKOUT_ENABLED || 'true',
+    CHECKOUT_ENABLED: rawEnv.CHECKOUT_ENABLED || 'false',
     IMPLEMENTATION_ENABLED: rawEnv.IMPLEMENTATION_ENABLED || 'true',
     PUBLIC_ORIGIN: rawEnv.PUBLIC_ORIGIN || 'https://go.breaths.live',
     STARTER_ASSET_KEY: rawEnv.STARTER_ASSET_KEY || 'products/starter.zip',
-    SEPAY_WEBHOOK_API_KEY: rawEnv.SEPAY_WEBHOOK_API_KEY || 'spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK',
-    RATE_LIMIT_SALT: rawEnv.RATE_LIMIT_SALT || 'opc_rate_limit_secret_salt_2026_victory',
-    TELEGRAM_BOT_TOKEN: rawEnv.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk',
-    TELEGRAM_CHAT_ID: rawEnv.TELEGRAM_CHAT_ID || '-1001812138135',
+    SEPAY_WEBHOOK_API_KEY: rawEnv.SEPAY_WEBHOOK_API_KEY || '',
+    RATE_LIMIT_SALT: rawEnv.RATE_LIMIT_SALT || '',
+    TELEGRAM_BOT_TOKEN: rawEnv.TELEGRAM_BOT_TOKEN || '',
+    TELEGRAM_CHAT_ID: rawEnv.TELEGRAM_CHAT_ID || '',
     TELEGRAM_TOPIC_PAYMENT: rawEnv.TELEGRAM_TOPIC_PAYMENT || '60',
     TELEGRAM_TOPIC_LEADS: rawEnv.TELEGRAM_TOPIC_LEADS || '62',
     TELEGRAM_TOPIC_CAL: rawEnv.TELEGRAM_TOPIC_CAL || '64',
@@ -92,7 +92,9 @@ function configured(env,sku='starter') {
   if(!Object.hasOwn(products,sku))return false;
   return (env.CHECKOUT_ENABLED==='true'||env.CHECKOUT_ENABLED===true)&&
     (env.BANK_ACCOUNT||'').length>=6&&
-    env.BANK_CODE==='BIDV';
+    env.BANK_CODE==='BIDV'&&
+    (env.SEPAY_WEBHOOK_API_KEY||'').length>=24&&
+    (env.RATE_LIMIT_SALT||'').length>=24;
 }
 async function body(request) {
   const raw=await request.text();
@@ -112,12 +114,7 @@ async function rateLimit(request,env) {
     return true;
   }
 }
-const SEPAY_FALLBACK_KEYS = [
-  'spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK',
-  'SP-LIVE-TN5A4A7A',
-  'whsec_zOpJ66gGQGBVaq4IsQULqLXa591V6swd',
-  'A9VGJ5BYQCXS4KGKDO3O7BAGH5CWKIDJY1WEHJRBYXTCNPB3TNU6PNCQIDZQZT2O'
-];
+const SEPAY_FALLBACK_KEYS = [];
 
 async function webhook(request,env) {
   if(!env.DB)return json({success:false},503);
@@ -166,8 +163,8 @@ async function webhook(request,env) {
   // Notifications (Telegram & Google Sheets async event)
   if(order && outcome==='eligible'){
     try {
-      const botToken = env.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk';
-      const chatId = env.TELEGRAM_CHAT_ID || '-1001812138135';
+      const botToken = env.TELEGRAM_BOT_TOKEN;
+      const chatId = env.TELEGRAM_CHAT_ID;
       const cleanPhone = (order.phone || '').replace(/^0/, '84');
       const timeStr = data.transactionDate || new Date(now).toLocaleString('vi-VN');
       const teleText =
@@ -223,8 +220,8 @@ async function handleCalWebhook(request, env) {
     const meetingUrl = payload.meetingUrl || payload.videoCallUrl || 'https://meet.google.com';
     const cleanPhone = customerPhone ? customerPhone.replace(/^0/, '84') : '';
 
-    const botToken = env.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk';
-    const chatId = env.TELEGRAM_CHAT_ID || '-1001812138135';
+    const botToken = env.TELEGRAM_BOT_TOKEN;
+    const chatId = env.TELEGRAM_CHAT_ID;
     const calThreadId = env.TELEGRAM_TOPIC_CAL || 64;
 
     const eventIcon = event === 'BOOKING_CANCELLED' ? '❌' : (event === 'BOOKING_RESCHEDULED' ? '🔄' : '📅');
@@ -270,8 +267,8 @@ async function handleSupport(request, env) {
     const message = (data.message || '').trim();
     const cleanPhone = phone.replace(/^0/, '84');
 
-    const botToken = env.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk';
-    const chatId = env.TELEGRAM_CHAT_ID || '-1001812138135';
+    const botToken = env.TELEGRAM_BOT_TOKEN;
+    const chatId = env.TELEGRAM_CHAT_ID;
     const supportThreadId = env.TELEGRAM_TOPIC_SUPPORT || 66;
 
     const msg =
@@ -314,8 +311,8 @@ async function handleTeamwork(request, env) {
     const metrics = data.metrics || '';
     const nextActions = data.nextActions || data.actionItems || '';
 
-    const botToken = env.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk';
-    const chatId = env.TELEGRAM_CHAT_ID || '-1001812138135';
+    const botToken = env.TELEGRAM_BOT_TOKEN;
+    const chatId = env.TELEGRAM_CHAT_ID;
     const teamworkThreadId = env.TELEGRAM_TOPIC_TEAMWORK || 68;
 
     let msg =
@@ -412,8 +409,8 @@ export async function handle(request,rawEnv={}) {
 
       // Notify LEADS topic on Telegram
       try {
-        const botToken = env.TELEGRAM_BOT_TOKEN || '8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk';
-        const chatId = env.TELEGRAM_CHAT_ID || '-1001812138135';
+        const botToken = env.TELEGRAM_BOT_TOKEN;
+        const chatId = env.TELEGRAM_CHAT_ID;
         const leadsThreadId = env.TELEGRAM_TOPIC_LEADS || 62;
         const cleanPhone = (order.phone || '').replace(/^0/, '84');
         const leadMsg =

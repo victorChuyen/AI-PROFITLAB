@@ -48,7 +48,7 @@ Trang Chủ (index.html)     Bộ Starter 45 Trang          Tư Vấn 1:1 VIP ($
 
 ## 🚀 2. BẢNG PHÂN BỔ 5 TOPIC TELEGRAM ĐIỀU HÀNH
 **Nhóm Telegram Supergroup:** `🎓OPC TNC | Điều Hành` (ID: `-1001812138135`)  
-**Bot:** `@opcprofitlab_bot` (`8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk`)
+**Bot:** `@opcprofitlab_bot` (token lưu riêng trong Cloudflare Secret)
 
 | Topic Telegram | Thread ID | Chức Năng | Kích Hoạt |
 |---|:---:|---|---|
@@ -117,8 +117,8 @@ Tại **Settings** -> **Variables and Secrets**, thêm các biến sau (tham kh�
 - `IMPLEMENTATION_ENABLED`: `true`
 - `PUBLIC_ORIGIN`: `https://go.breaths.live` (hoặc custom domain của bạn)
 - `STARTER_ASSET_KEY`: `products/starter.zip`
-- `SEPAY_WEBHOOK_API_KEY`: `spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK`
-- `TELEGRAM_BOT_TOKEN`: `8824380839:AAEpbHsyJyOU6FSRO7QbJi6af93TAEPmTFk`
+- `SEPAY_WEBHOOK_API_KEY`: đặt dưới dạng Cloudflare Secret; không ghi giá trị vào source.
+- `TELEGRAM_BOT_TOKEN`: đặt dưới dạng Cloudflare Secret; không ghi giá trị vào source.
 - `TELEGRAM_CHAT_ID`: `-1001812138135`
 - `TELEGRAM_TOPIC_PAYMENT`: `60`
 - `TELEGRAM_TOPIC_LEADS`: `62`
@@ -130,7 +130,7 @@ Tại **Settings** -> **Variables and Secrets**, thêm các biến sau (tham kh�
 Truy cập [my.sepay.vn](https://my.sepay.vn):
 - URL Webhook: `https://<your-domain>/api/sepay`
 - Phương thức: **API Key**
-- API Key: `spsk_live_3BsKdoj9AshiHUMmLAmZGdisdoKLB7JK`
+- API Key: dùng secret đã xoay vòng trong Cloudflare; không chép khóa vào README.
 - Tài khoản nhận: BIDV `96247688688`
 
 ---
